@@ -73,3 +73,122 @@ public class Algorithm {
   }
 }
 ```
+
+### `HouseBuilding Layer Tail and Head`
+
+```java
+public class HouseBuilding {
+  // like simple for loop
+  public void buildLayerTail(int height) {
+    if( height == 0) return;
+
+    System.out.println(height);
+
+    buildLayerTail(height - 1);
+  }
+
+  // use operating system stack memory
+  public void buildLayerHead(int height) {
+    if( height == 0) return;
+
+    buildLayerHead(height - 1);
+
+    System.out.println(height);
+  }
+
+  public static void main(String[] args) {
+    HouseBuilding house = new HouseBuilding();
+    house.buildLayerHead(5); // 1 2 3 4 5
+    house.buildLayerTail(5); // 5 4 3 2 1
+  }
+}
+```
+
+## `Factorial`
+- `Method 1:` (slower)
+  - Pushing to the stack
+  - Hit the base case n = 1
+  - retrieve all recursie calls
+```java
+public int factorial(int n) {
+  if (n == 1) return 1;
+  return n * factorial(n - 1);
+}
+```
+```python
+def factorial(5):
+  def factorial(4):
+    def factorial(3):
+      def factorial(2):
+        def factorial(1):
+          return 1
+        return 2 * 1
+      return 3 * 2 * 1
+    return 4 * 3 * 2 * 1
+  return 5 * 4 * 3 * 2 * 1 # 120
+```
+
+- `Method 2:` (Faster)
+  - Pushing to the stack
+  - Hit the base case n = 1 , and return the result(accumulator)
+```java
+public int factorial(int accumulator , int n) {
+  if (n == 1) return accumulator;
+  return factorial(n * accumulator, n - 1);
+}
+```
+
+```python
+def factorial(1,5):
+  def factorial(1 * 5, 4):
+    def factorial(1 * 5 * 4, 3):
+      def factorial(1 * 5 * 4 * 3, 2):
+        def factorial(1 * 5 * 4 * 3 * 2 * 1, 1):
+          return (1 * 5 * 4 * 3 * 2 * 1) # 120
+```
+
+#### `Factorial source`
+
+```java
+public class Factorial {
+  public int factorial(int n) {
+    if (n == 1) return 1;
+    return n * factorial(n - 1);
+  }
+
+  public int factorial(int accumulator , int n) {
+    if (n == 1) return accumulator;
+    return factorial(n * accumulator, n - 1);
+  }
+
+  public static void main(String[] args) {
+    Factorial f = new Factorial();
+    System.out.println(f.factorial(5)); // 120
+    System.out.println(f.factorial(1, 5)); // 120
+  }
+}
+```
+## `Euclidean Algorithm: Greatest common divisor (GCD)`
+
+```java
+public class GCD {
+  public int gcdIterative(int num1, int num2) {
+    while( num2 != 0) {
+      int temp = num2;
+      num2 = num1 % num2;
+      num1 = temp;
+    }
+    return num1;
+  }
+
+  public int gcdRecursive(int num1, int num2) {
+    if(num2 == 0) return num1;
+    return gcdRecursive(num2 ,num1 % num2);
+  }
+  public static void main(String[] args) {
+    GCD gcd = new GCD();
+    System.out.println(gcd.gcdIterative(30, 100)); // 10
+    System.out.println(gcd.gcdRecursive(100, 30)); // 10
+  }
+}
+```
