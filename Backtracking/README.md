@@ -168,14 +168,14 @@ public class QueensProblem {
 
 ```java
 public class HamiltonianCycle {
-  private int numOfVertexes;
+  private int numOfVertices;
   private int[] hamiltonianPath;
   private int[][] adjacencyMatrix;
 
   public HamiltonianCycle(int[][] adjacencyMatrix) {
     this.adjacencyMatrix = adjacencyMatrix;
     this.hamiltonianPath = new int[adjacencyMatrix.length];
-    this.numOfVertexes = adjacencyMatrix.length;
+    this.numOfVertices = adjacencyMatrix.length;
 
     this.hamiltonianPath[0] = 0; //root, start node
   }
@@ -189,7 +189,7 @@ public class HamiltonianCycle {
 
   public boolean findFeasibleSolution(int position) {
     // base case
-    if(position == numOfVertexes) {
+    if(position == numOfVertices) {
       int last = hamiltonianPath[position - 1];
       int start = hamiltonianPath[0];
       //if the last vertex connected with start vertex, then it's hamiltonian cycle
@@ -198,7 +198,7 @@ public class HamiltonianCycle {
     }
 
     // start from the second vertex(node) since first vertex is 0 (root)
-    for(int vertexIndex = 1; vertexIndex < numOfVertexes \ ; vertexIndex++) {
+    for(int vertexIndex = 1; vertexIndex < numOfVertices \ ; vertexIndex++) {
       if(findFeasible(vertexIndex, position)) {
         hamiltonianPath[position] = vertexIndex;
 
@@ -254,6 +254,125 @@ public class HamiltonianCycle {
     cycle2.solve(); // solution
     // Hamiltonian cycle:
     //  0 1 4 5 2 3 0
+  }
+}
+```
+
+## Coloring problem
+- <b>NP-complete problem</b> problem !!! ~ exponential running time
+- <u>Problem:</u> coloring the vertices of a graph such that no two adjacent vertices share the same color
+- This is called a vertex coloring
+- Reached popularity with the general public in the form of the popular number puzzle Sudoku
+- The smallest number of colors needed to color a graph <b>G</b> is called its <b>chromatic number</b>
+- There may be more than one solution: for example we can color a graph with 4 vertices in 12 ways with 3 colors !!!
+
+### Application:
+
+#### <u>Bipartite graphs</u>
+- Determining if a graph can be colored with 2 colors is equivanlent to determining whether or not the graph is bipartite, and thus computable in linear time using breadth-first search
+- Bipartite graph: a graph whose vertices can be divided into two disjoint sets U and V (U and V are independent sets) such that every edge connects a vertex in U to one in V.
+
+#### <u>Making schedules</u>
+- We want to make an exam schedule for a university. We have different subjects and different students enrolled on every subject. Many subjects would have common students.
+- <b> How do we schedule the exam so that no two exams with a common student are scheduled at the same time? How many minimum time slots are needed to scheule all exams?</b>
+- This problem can be represented as a graph where every vertex is a subject and an edge between two vertices means there is a comon student.
+  - So this is a graph coloring problem wherer minimum number of time slots is equal to the chromatic number of the graph.
+
+#### <u>Radio frequency assignment</u>
+- When frequencies are assigned to towers, frequencies assigned to all towers at the same location must be different because of the interference !!!
+- <b>How to assign frequencies with this constraint? what is the minimum number of frequencies needed?</b>
+- This problem is also an instance of graph coloring problem where every tower represents a vertex and an edge between two towers represents that they are in range of each other
+
+#### <u>Register allocation</u>
+- In compiler optimization, register allocation is the provess of assigning a large number of target program variables onto a small number of CPU registers
+
+## <u>Map coloring</u>
+- We want to construct a map of countries or states where adjacent countries or states can not be assigned the same color
+- <b>This is "typical" coloring problem </b>
+- Four colors are sufficient to color any map --> <b>"four color theorem"</b>
+
+<b><u>Solution:</b></u>
+- Greedy approach -> finds the solution but not the most optimal one
+  - It may uses more colors than necessary !!!
+- Powerll-Welsh alogirthm -> relies on sorting the nodes according to the degrees + we start assigning colors to the nodes with the most neighbors !!!
+- BACKTRACKING
+### BACKTRACKING solution:
+- We assign colors one by one to different vertices starting from the first vertex (optional)
+- Before assigning a color -> we check for safety by considering already assigned colors to the adjacent vertices
+- If we find a color assignment which is feasible -> we mark th ecolor assignment as part of solution
+- If we do not find a color due to clashes (same color) -> we backtrack!!!
+
+```java
+public class ColoringProblem {
+  private int numOfVertices;
+  private int numOfColors;
+  private int[] colors; // like a path of , index is vertex (0,1,2...) and value is color (0,1,2...)
+  private int[][] adjacencyMatrix;
+
+  public ColoringProblem(int[][] adjacencyMatrix, int numOfColors) {
+    this.adjacencyMatrix = adjacencyMatrix;
+    this.numOfColors = numOfColors;
+    this.numOfVertices = adjacencyMatrix.length;
+    this.colors = new int[numOfVertices];
+  }
+
+  public void solve() {
+    if(solveProblem(0))
+      showResults();
+    else
+      System.out.println("No solution ... ");
+  }
+
+  private boolean solveProblem(int nodeIndex) {
+    if(nodeIndex == numOfVertices) // base case, found a solution
+      return true;
+
+    for(int colorIndex = 1; colorIndex <= numOfColors; colorIndex++) {
+      if(isColorValid(nodeIndex, colorIndex)) {
+        colors[nodeIndex] = colorIndex;
+
+        if(solveProblem(nodeIndex + 1))
+          return true;
+
+        // BACKTRACK!!! Find a different color for this given node (nodeIndex)
+      }
+    }
+    return false;
+  }
+
+  private boolean isColorValid(int nodeIndex, int currentColor) {
+    for(int i = 0; i < numOfVertices; i++)
+      if ((adjacencyMatrix[nodeIndex][i] == 1) && (colors[i] == currentColor))
+        return false;
+    return true;
+  }
+
+  private void showResults() {
+    for(int i = 0; i < numOfVertices; i++)
+      System.out.println("Node " + (i + 1) + " has color index: " + colors[i]);
+  }
+
+  public static void main(String[] args) {
+    int[][] adjacencyMatrix = new int[][] {
+      {0,1,0,1,0},
+      {1,0,1,1,0},
+      {0,1,0,1,0},
+      {1,1,1,0,1},
+      {0,0,0,1,0}
+    };
+    int numOfColors = 3;
+    ColoringProblem color = new ColoringProblem(adjacencyMatrix, numOfColors);
+    color.solve();
+
+    /*
+      numOfColors = 2 --> No solution
+      numOfColors = 3 --> There is a solution
+      Node 1 has color index: 1
+      Node 2 has color index: 2
+      Node 3 has color index: 1
+      Node 4 has color index: 3
+      Node 5 has color index: 1
+    */
   }
 }
 ```

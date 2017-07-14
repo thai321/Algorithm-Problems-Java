@@ -1,12 +1,12 @@
 public class HamiltonianCycle {
-  private int numOfVertexes;
+  private int numOfVertices;
   private int[] hamiltonianPath;
   private int[][] adjacencyMatrix;
 
   public HamiltonianCycle(int[][] adjacencyMatrix) {
     this.adjacencyMatrix = adjacencyMatrix;
     this.hamiltonianPath = new int[adjacencyMatrix.length];
-    this.numOfVertexes = adjacencyMatrix.length;
+    this.numOfVertices = adjacencyMatrix.length;
 
     this.hamiltonianPath[0] = 0; //root, start node
   }
@@ -20,7 +20,7 @@ public class HamiltonianCycle {
 
   public boolean findFeasibleSolution(int position) {
     // base case
-    if(position == numOfVertexes) {
+    if(position == numOfVertices) {
       int last = hamiltonianPath[position - 1];
       int start = hamiltonianPath[0];
       //if the last vertex connected with start vertex, then it's hamiltonian cycle
@@ -29,7 +29,7 @@ public class HamiltonianCycle {
     }
 
     // start from the second vertex(node) since first vertex is 0 (root)
-    for(int vertexIndex = 1; vertexIndex < numOfVertexes ; vertexIndex++) {
+    for(int vertexIndex = 1; vertexIndex < numOfVertices ; vertexIndex++) {
       if(findFeasible(vertexIndex, position)) {
         hamiltonianPath[position] = vertexIndex;
 
