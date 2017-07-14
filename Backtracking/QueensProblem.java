@@ -27,7 +27,7 @@ public class QueensProblem {
         if(setQueens(colIndex + 1))
           return true;
 
-        // BACKTRACKING !!!
+        // BACKTRACKING !!! reset the value back to 0
         chessTable[rowIndex][colIndex] = 0;
         // set it back to 0, and place this queen in the next position on the rowIndex
       }
