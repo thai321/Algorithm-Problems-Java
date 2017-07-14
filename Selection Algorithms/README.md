@@ -146,3 +146,49 @@ public class QuickSelect {
   }
 }
 ```
+
+## `Median of medians select`
+
+- Each partition() phase takes `O(N)` time where N is smaller and smaller.
+  - We keep discrading more and more items: If we are not able to discard many items on every iteration
+    - -> the running time will be quaratic
+      - -> O(N<sup>2</sup>) worst case running time
+- We may make sure the running time remains `O(N)` if we keep discarding half of the array on every iteration
+  - How? We have to pick a "good" pivot
+    - If we pick the median as a pivot: there will be approximately same amount of items on the left and right subarrays!!!
+  - It is the approximated median: but enough to make sure we discard more items
+
+- It is basically the same as quickselect, the only difference is how we get the pivot value
+  - quick select: we generate a random index
+  - median of medians: we calculate the aproximated median
+  - `O(N)` running time guaranteed
+  - `O(log N)` worst case memory complexity
+
+## `Introselect`
+- It is a hubrid algorithm: combining two algorithms in order to take advaantage of the best features
+  - Quickselect is in-place( no need extra memory), this is advantage
+  - Median of medians select: always fast `O(N)`
+- Let's combine them : introselect starts with quickselect in order to obtain good average performace, and then falls back to median of medians if progress is too slow.
+
+## `Online Selection: the Secretary Problem`
+- Online alorithm related problem
+- we want to find the <b>k-th</b> smallest/ largest item of a stream
+- Partition based algorithms can not be used: we do not know the data in advance
+- The problem is to select (under these constraints) a specific element of the input sequence of data with largest probability
+
+- Very important problem of optimal stopping theory <b>(NP-hard problem)</b>
+- Also known as "best choice problem"
+- <u>Problem</u>: we want to hire the best secretary out of N applicants. Applicant are interviewed one by one + after rejecting, the applicant can not be recalled. We can rank the applicant among all applicants interviewed so far, but we are unaware of the quality of yet unseen applicants.
+- What is the optimal strategy?
+- We want to maximize the probability of selecting the best applicant
+
+- If we can mek the decision at the end: we just hav eto make a maximum finding
+- It can be done in `O(N)`... no problem
+- BUT we have to make the decision immediately !!!
+
+<b>Solution:</b>
+- Alwasy reject the first `n/e` applicatns and then we have to stop at the one who is better than al the previos ones
+  - e: natural logarithm ~ 2.718...
+  - It is very popular problem because it has a well defined solution
+  - The probability of choosing the best applicant is `1/e`
+  - So `37%` chance we find the optimal one
