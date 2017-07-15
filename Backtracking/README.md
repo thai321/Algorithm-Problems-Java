@@ -714,3 +714,19 @@ public class Sudoku {
   }
 }
 ```
+
+## NP-Complete Problems
+### (backtracking related part only)
+
+- <u>Backtracking:</u>
+  - N-queens problem -> exponential running time with backtracking
+  - Coloring problem -> exponential running time
+  - Sudoku problem -> exponential running time
+  - Usually <b>NP-complete</b> and <b>NP-hard problems</b> are very slow to solve
+  - <u>Solution:</u> we do not want to get the exact solution, just an approximation will be fine!!!
+
+### Meta-heruistics
+- Usually for <b>NP-hard></b> problems we are looking for an approximate solution instead of the exact one
+- <u>Methods:</u> ant-colony optimization, genetic algorithms, simulated annealing
+- Not always find the optimal solution (global minimum) BUT the algorithm will be fast
+- <b>THIS IS WHY ARTIFICIAL INTELLIGENCE IS IMPORTANT!!!</b>
