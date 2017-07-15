@@ -407,3 +407,81 @@ public class RodCutting {
   }
 }
 ```
+## Subset Sum Problem
+- One of the most important problems in complexity theory
+- The problem: given an <b>S</b> set of integers, is there a non-empty subset whose <b>s</b> sum is zero or a given integer?
+- For example: given the set <b>{5,2,1,3}</b> and <b>s=9</b>, the answer is <b>YES</b> because the subset {5,3,1} sums to <b>9</b>
+- The problem is <b>NP-complete</b> -> we have eifficient algorithsm when the problem is small !!!
+- Special case of knapsack-problem
+
+<u>Solutions:</u>
+1) <u>Naive</u> approach "brute froce search"
+  - Generate all the subsets of the given set of integers
+  - <b>N</b> is the number of integers in the set <b>S</b>
+  - Check whether the sum of all subsets is equal to <b>S</b> or not
+  - Time complexity: exponential // <b>O(N * 2<sup>N</sup>)
+2) <u>Dynamic Programming:</u> we want to avoid calculating the same problems over and over again ... we create a dynamic programming table and memoize
+
+```java
+public class SubsetSum {
+  private boolean[][] dpTable;
+  private int[] S;
+  private int sum;
+
+  public SubsetSum(int[] S, int sum) {
+    this.S = S;
+    this.sum = sum;
+    this.dpTable = new boolean[S.length + 1][sum + 1];
+  }
+
+  public void solve() {
+    // initialize
+    for(int i = 0; i < S.length + 1; i++)
+      dpTable[i][0] = true;
+    // java default boolean array value to false
+    // therefore the first row dpTable[0][i] is all false, except 1st value is true
+
+
+    for(int i = 1; i < S.length + 1; i++)
+      for(int j = 1; j < sum + 1; j++) {
+        if( dpTable[i-1][j] || (j < S[i-1]))
+          dpTable[i][j] = dpTable[i-1][j];
+        else
+          dpTable[i][j] = dpTable[i-1][j - S[i-1]];
+      }
+    System.out.println("Solution: " + dpTable[S.length][sum]);
+  }
+
+  public void showResult() {
+    int colIndex = sum;
+    int rowIndex = S.length;
+    System.out.println("Sum = " + sum);
+    // start witht the value of dpTable[S.length][sum] which is true
+    while(colIndex > 0 || rowIndex > 0) {
+      if(dpTable[rowIndex][colIndex] == dpTable[rowIndex-1][colIndex]) {
+        rowIndex -= 1;
+      } else {
+        System.out.println("Take: " + S[rowIndex-1]);
+        colIndex -= S[rowIndex-1];
+        rowIndex -=1;
+      }
+    }
+  }
+
+  public static void main(String[] args) {
+    int[] numbers = {5,2,3,1};
+    int sum = 9;
+
+    SubsetSum f = new SubsetSum(numbers, sum);
+    f.solve();
+    f.showResult();
+    /*
+      Solution: true
+      Sum = 9
+      Take: 1
+      Take: 3
+      Take: 5
+    */
+  }
+}
+```
