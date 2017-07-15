@@ -313,3 +313,97 @@ public class CoinChange {
   }
 }
 ```
+
+
+## Rod Cutting Problem
+- Given a rod with certain length I
+- Given the prices of different lengths
+- How to cut the rod in order to maximize the profit?
+- Example:
+  - Rod length -> I = 5m
+  - <u>Prices for different lengths:</u>
+    - 1m -> $2
+    - 2m -> $5
+    - 3m -> $7
+    - 4m -> $3
+  - Solution to the rod cutting problem:
+    - {2,3} so a cut the rod to get a 2m piece and a 3m piece
+  - OR
+  - {2,2,1} 2 2m pieces and a single 1m piece, it is going to be the same $12 profit
+  - Total value for both solutions: <b>$12</b>
+
+#### <u>Recursion</u> (very slow)
+- The naive approach is to use a simple recursive method/function
+- <b>N-1</b> cuts can be made in the rod of length <b>N</b>
+- There are <b>2<sup>N-1<sup></b> ways to cut the rod, cause every single point on rod, we have to decide to cut it or not.
+- <u>Problems:</u> time complexity + overlapping subproblems
+- Exponential time complexity: <b>O(2<sup>N</sup>)</b> where <b>N</b> is the length of the rod in units
+- (for every length we have 2 options whether to cut or not)
+
+#### <u>Dynamic programming</u>
+- We have to create a solution matrix:
+> - dpTable[numOfLength + 1][originalLength +1 ]
+
+>                   rows            columns
+
+- We have to define the <u>base cases:</u>
+  - If originalLength is <b>0 -> 0</b> is the profit
+  - If we do not consider any lengths -> 0 is the profit
+- <u>Complexity:</u> <b>O(numOfLengths *  originalLength)</b>
+
+```java
+public class RodCutting {
+  private int[][] dpTable;
+  private int lengthOfRod;
+  private int[] prices;
+
+  public RodCutting(int lengthOfRod, int[] prices) {
+    this.prices = prices;
+    this.lengthOfRod = lengthOfRod;
+    this.dpTable = new int[prices.length + 1][lengthOfRod + 1]; // default values to 0
+  }
+
+  public void solve() {
+    //initialize: java Array default values to 0
+
+    for(int i = 1; i < prices.length; i++) {
+      for(int j = 1; j <= lengthOfRod; j++) {
+        if(i <= j)
+          dpTable[i][j] = Math.max(dpTable[i-1][j], prices[i] + dpTable[i][j-i]);
+        else
+          dpTable[i][j] = dpTable[i-1][j];
+      }
+    }
+  }
+
+  public void showResult() {
+    System.out.println("Optimal profit: $ " + dpTable[prices.length - 1][lengthOfRod]);
+
+    int n = prices.length - 1, length = lengthOfRod;
+    // The End of result if dpTable[n][length] = 0 or n > 0
+    while(n > 0) {
+      if((dpTable[n][length] != dpTable[n-1][length])) {
+        System.out.println("We make cut: " + n + "m");
+        length -= n;
+      }
+      else
+        n--;
+    }
+  }
+
+  public static void main(String[] args) {
+    int lengthOfRod = 5;
+    int[] prices = {0,2,5,7,3};
+
+    RodCutting cutting = new RodCutting(lengthOfRod, prices);
+    cutting.solve();
+    cutting.showResult();
+    /*
+      Optimal profit: $ 12
+      We make cut: 2m
+      We make cut: 2m
+      We make cut: 1m
+    */
+  }
+}
+```
