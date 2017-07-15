@@ -198,3 +198,118 @@ public class Knapsack {
   }
 }
 ```
+
+
+## Coin Change problem
+- Given a set of coins <b>v[]</b> for example {1,2,3}
+- Given an <b>M</b> amount <b>-></b> the TotalHow many ways the coins <b>v[]</b> can be combined in order to get the total <b>M</b>?
+- The order of coins does not mater !!!
+- This is the coin change problem
+- Example:
+  - Coins <b>v[]</b> -> {1,2 3}
+  - Total amount <b>M</b> -> 4
+  - Solution to the coin change problem:
+    -> {1,1,1,1} {1,1,2} {1,3} {2,2}
+  - the order of coins does not matter !!!
+    - For example: {1,3} = {3,1}
+
+#### <u>Recursion</u>
+- The naive approach is to use a simple recursive method /function
+- For every single coin we have two options: include it in our solution or exclude it
+- <u>Problems:</u> time complexity + overlapping subproblems
+- Exponential time complexity: <b>O(2<sup>N</sup>) where N is the number of coins</b>
+- For every coin we have 2 options whether to take it or not
+
+#### <u>Dynamic programming</u>
+- We have to create a solution matrix:
+>  - <b> dpTable[numOfCoins + 1][totalAmount + 1]
+
+>                 rows              columns
+
+- We have to define the <u><b>base cases:</b></u>
+  - If totalAmount is <b>0</b> -> there is 1 way to make the change --> We don't have to take any coin at all.
+    - because we do not include any coin !!!
+  - If numOfCoins is <b>0</b> -> There is 0 way to change the amount
+    - In this case there is no solution !!!
+  - <u>Complexity:</u> <b>O(v*M)</b>
+
+
+- For every coin: make a decision whether to include it or not
+- Check if the coin value is elss than or equal to the amount needed
+  - If Yes -> then we will find ways by including that coin and excluding that coin
+    1) include the coin: reduce the amount by coin value and use the subproblem solution // <b>totalAmount 0 v[i]</b>
+    2) exclude the coin: solution for the same amount without considering that coin.
+
+```java
+public class CoinChange {
+
+  // M = amount = totalValue (capacity of coins values $$$)
+  //recursive coin change, EXONENTIAL RUNNING TIME O(2^N)
+  public int naiveCoinChange(int totalValue, int[] coinValues, int index) { // start at the first coin
+
+    if(totalValue < 0) return 0;// No , there is no possible change
+    if(totalValue == 0) return 1; // Yes, there is a way of these coins to get to the totalValue
+
+    if(index == coinValues.length) return 0; // consider every single coin in 1-D array
+
+    int includeCoin = naiveCoinChange(totalValue - coinValues[index], coinValues, index);
+    int excludeCoin = naiveCoinChange(totalValue, coinValues, index + 1);
+
+    return includeCoin + excludeCoin;
+  }
+
+  // M = amount = totalValue (capacity of coins values $$$)
+  public void dpCoinChange(int[] coins, int capacity) {
+    int[][] dpTable = new int[coins.length + 1][capacity + 1];
+
+    // intialize the first column to 1
+    for(int coinIndex = 0; coinIndex <= coins.length; coinIndex++)
+      dpTable[coinIndex][0] = 1;
+
+    // intialize the first row to 0
+    for(int capacityIndex = 1; capacityIndex <= capacity; capacityIndex++ )
+      dpTable[0][capacityIndex] = 0;
+
+    // O(v*M) , v: coins.length or number of coins, M: capacity
+    for(int i = 1; i <= coins.length; i++) {
+      for(int j = 1; j <= capacity; j++ ) {
+        int numberOfWays = dpTable[i-1][j]; // if coints[i] > j take the previous value which is above row
+        if (coins[i-1] <= j)
+          numberOfWays += dpTable[i][j-coins[i-1]];
+
+        dpTable[i][j] = numberOfWays;
+      }
+    }
+    System.out.println("Solution: " + dpTable[coins.length][capacity]);
+    printTable(dpTable, coins.length, capacity);
+
+  }
+
+  private void printTable(int[][] dpTable, int length, int width) {
+    for(int i = 0; i <= length; i++) {
+      for(int j = 0; j <= width; j++ ) {
+        System.out.print(dpTable[i][j] + " ");
+      }
+      System.out.println();
+    }
+  }
+
+  public static void main(String[] args) {
+    int[] coinsValues = {1,2,3};
+    int totalValue = 5;
+
+    CoinChange change = new CoinChange();
+    // 5 possible solution
+    System.out.println(change.naiveCoinChange(totalValue, coinsValues, 0));
+
+    change.dpCoinChange(coinsValues, totalValue);
+    /*
+      Solution: 5 possible ways to use coins {1,2,3} to change upto totalValue of 5
+      1 0 0 0 0 0
+      1 1 1 1 1 1
+      1 1 2 2 3 3
+      1 1 2 3 4 5
+    */
+  }
+}
+```
