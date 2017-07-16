@@ -1,0 +1,12 @@
+digraph G {
+  FS [label = "Fourier Series"];
+  LA [label = "Linear Algebra"];
+  DE [label = "Differential Equation"];
+  SP [label = "Stochastic Processes"];
+
+  Calculus ->  FS;
+  LA -> Calculus;
+  DE -> Calculus;
+  SP -> Calculus;
+  SP -> DE
+}
