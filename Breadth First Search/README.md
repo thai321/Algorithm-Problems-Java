@@ -134,3 +134,142 @@ public class BFS {
   }
 }
 ```
+
+## BFS - WebCrawler (core of search engines)
+- Basically the whole internet can be represented by a directd graph / network
+  - With vertices -> these are the domains /URLs/ websites
+  - Edges -> these are the connections
+- Wieth BFS, we are able to traverse the web -> this is called a web-crawler that can hop from URL to URL and can observe the features of the network
+  - For example: The topology ~ degree distribution and so on !!!
+
+```java
+import java.util.List;
+import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.Queue;
+import java.util.regex.*;
+import java.net.URL;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
+public class WebCrawler {
+  private Queue<String> queue;
+  private List<String> discoveredWebsitesList;
+
+  public WebCrawler() {
+    this.queue = new LinkedList<>();
+    this.discoveredWebsitesList = new ArrayList<>();
+  }
+
+  public void discoveredWeb(String root) {
+    this.queue.add(root);
+    this.discoveredWebsitesList.add(root);
+
+    while(!queue.isEmpty()) {
+      String v = this.queue.remove();
+      String rawHtml = readURL(v);
+
+      String regexp = "http://(\\w+\\.)*(\\w+)";
+      Pattern pattern = Pattern.compile(regexp);
+      Matcher matcher = pattern.matcher(rawHtml);
+
+      while(matcher.find()) {
+        String actualUrl = matcher.group();
+
+        if(!discoveredWebsitesList.contains(actualUrl)) {
+          discoveredWebsitesList.add(actualUrl);
+          System.out.println("Website has been found with URL: " + actualUrl);
+          queue.add(actualUrl);
+        }
+      }
+    }
+  }
+
+  private String readURL(String v) {
+    String rawHtml = "";
+
+    try {
+      URL url = new URL(v);
+      BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+      String inputLine = "";
+
+      while((inputLine = in.readLine()) != null) {
+        rawHtml += inputLine;
+      }
+      in.close();
+    } catch(Exception e) {
+      e.printStackTrace();
+    }
+    return rawHtml;
+  }
+
+  public static void main(String[] args) {
+    WebCrawler crawler = new WebCrawler();
+    String rootUrl = "http://www.google.com";
+
+    crawler.discoveredWeb(rootUrl);
+  }
+}
+```
+
+
+```java
+/*
+Result:
+Website has been found with URL: http://schema.org
+Website has been found with URL: http://maps.google.com
+Website has been found with URL: http://www.youtube.com
+Website has been found with URL: http://news.google.com
+Website has been found with URL: http://www.w3.org
+Website has been found with URL: http://lists.w3.org
+Website has been found with URL: http://github.com
+Website has been found with URL: http://blog.schema.org
+Website has been found with URL: http://www.w3devcampus.com
+Website has been found with URL: http://testthewebforward.org
+Website has been found with URL: http://www.money2020.com
+Website has been found with URL: http://coraliemercier.wordpress.com
+Website has been found with URL: http://validator.w3.org
+Website has been found with URL: http://jigsaw.w3.org
+Website has been found with URL: http://vimeo.com
+Website has been found with URL: http://www.sics.se
+Website has been found with URL: http://twitter.com
+Website has been found with URL: http://www.csail.mit.edu
+Website has been found with URL: http://www.ercim.eu
+Website has been found with URL: http://www.keio.ac.jp
+Website has been found with URL: http://ev.buaa.edu.cn
+Website has been found with URL: http://dev.w3.org
+Website has been found with URL: http://tools.ietf.org
+Website has been found with URL: http://www.ietf.org
+Website has been found with URL: http://www.multilingualweb.eu
+Website has been found with URL: http://tap.stanford.edu
+Website has been found with URL: http://rdfa.info
+Website has been found with URL: http://esw.w3.org
+Website has been found with URL: http://www.webplatform.org
+Website has been found with URL: http://www.ics.uci.edu
+Website has been found with URL: http://lcweb.loc.gov
+Website has been found with URL: http://pso.icann.org
+Website has been found with URL: http://iswc07.org
+Website has been found with URL: http://www.blogblog.com
+Website has been found with URL: http://iot.schema.org
+Website has been found with URL: http://idpf.org
+Website has been found with URL: http://www.idpf.org
+Website has been found with URL: http://reporterslab.org
+Website has been found with URL: http://bioschemas.org
+Website has been found with URL: http://lrmi.dublincore.net
+Website has been found with URL: http://pending.schema.org
+Website has been found with URL: http://health
+Website has been found with URL: http://www.edmcouncil.org
+Website has been found with URL: http://www.gs1.org
+Website has been found with URL: http://gs1.org
+Website has been found with URL: http://bib.schema.org
+Website has been found with URL: http://auto.schema.org
+Website has been found with URL: http://3.bp.blogspot.com
+Website has been found with URL: http://bl.ocks.org
+Website has been found with URL: http://d3js.org
+Website has been found with URL: http://w3c.github.io
+Website has been found with URL: http://www.lazaruscorporation.co.uk
+Website has been found with URL: http://v1.91
+Website has been found with URL: http://www.opendomain.org
+Website has been found with URL: http://www.dailymail.co.u
+*/
+```
