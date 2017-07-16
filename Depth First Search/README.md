@@ -63,7 +63,9 @@ def dfs(vertex)
   - Generating amzes OR finding way out of a maze
 
 ![DFS2](images/dfs2.dot.png)
-Visited Order: 1 3 4 5 2
+
+- Visited Order: 1 3 4 5 2 (Right then left)
+- Visited Order: 1 2 3 4 5 (Left then right)
 
 ```java
 import java.util.ArrayList;
