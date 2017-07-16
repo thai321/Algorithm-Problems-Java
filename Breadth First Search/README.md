@@ -25,14 +25,8 @@ def bfs(vertex)
         queue.enqueue(v)
 ```
 
-<img src='https://g.gravizo.com/g?
- graph G {
-   A -- B; A -- F; A -- G;
-   B -- C; B -- D;
-   D -- E;
-   G -- H;
- }
-'/>
+![BFS1](images/bfs1.dot.png)
+
 > Queue:{A}
 
 > Queue: {A}; eplore A --> Queue: {G F B}
@@ -62,13 +56,7 @@ def bfs(vertex)
 - It uses BFS to detect all the references on the heap
 - Serialization/ deserialization of a tree like structure (for example when order does matter) -> it allows the tree to be reconstructeed in an efficient manner !!!
 
-<img src='https://g.gravizo.com/svg?
- graph G {
-   1 -- 2; 1 -- 4;
-   2 -- 3;
-   4 -- 5;
- }
-'/>
+![BFS2](images/bfs2.dot.png)
 Visited Order: 1 2 4 3 5
 
 ```java
