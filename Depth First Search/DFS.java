@@ -11,13 +11,24 @@ public class DFS {
   }
 
   public void dfs(List<Vertex> vertexList) {
-
     // For loop here means if you have 2 or more un-connected graph
     // We still want to visit every single vertex
     for(Vertex v : vertexList) {
       if(!v.isVisited()) {
         v.setVisited(true);
-        dfsWithStack(v);
+        // dfsWithStack(v);
+        dfsRecursive(v);
+      }
+    }
+  }
+
+  private void dfsRecursive(Vertex v) {
+    System.out.print(v + " ");
+
+    for(Vertex vertex : v.getNeighbourList()) {
+      if(!vertex.isVisited()) {
+        vertex.setVisited(true);
+        dfsRecursive(vertex);
       }
     }
   }
@@ -62,6 +73,8 @@ public class DFS {
     list.add(v5);
 
     DFS f = new DFS();
-    f.dfs(list); // visited order: 1 3 4 5 2
+    f.dfs(list);
+    // With stack; visited order: 1 3 4 5 2 visit right and then left
+    // With Recursion; visited order: 1 2 3 4 5 visit left and then right
   }
 }
