@@ -1,0 +1,8 @@
+digraph G {
+  1 -> 2;
+  2 -> 4; 2 -> 5
+  4 -> 8; 4 -> 9
+  5 -> 1;
+  1,2 , 5 [style=filled,fillcolor="red"];
+  8,9,4 [style=filled,fillcolor="green"];
+}

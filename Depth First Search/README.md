@@ -267,3 +267,173 @@ dfs(4) -> visited [0 and 1] -->  stack: { 0, 1, 3, 2, 5, 4 }
 ==> Topological Order: 4 -> 5 -> 2 -> 3 -> 1 -> 0
 */
 ```
+
+
+## Cycle Detection
+- Cycle detection is quite intuitive
+- We would like to detect cycles in a directed graph
+- Sometimes: cycles are good -> we are looking for arbitrage situations on the FOREX than cycles are exactly what we are looking for!!!
+- BUT most of the times: we want to avoid them !!!
+- Operating systems can have several processes -> there may be same cases when there is a cycle -> they are waiting for each other
+- <b>OPERATING SYSTEM FREEZE !!!</b>
+- So we have to vaoid cycles
+
+```ruby
+def(Vertex vertex)
+  vertex.setVisited(false);
+  vertex.setBeingVisited(true);
+
+  for(Vertex v : vertex.getAdjacenciesList()) {
+
+    if(v.isBeingVisited()) {
+      print "Backward edge ... so there is a cycle in the graph!"
+      return;
+    }
+
+    if(!v.isVisited()) {
+      v.setVisited(true);
+      DFS(v);
+    }
+  }
+  vertex.setVisited(true);
+  vertex.setBeingVisited(false);
+```
+
+- <b><u> What dows it mean "beingVisited"?</u></b>
+- If we backtrack and come to the situation that the vertex from where we started has <b>No</b> more unvisited adacent vertices -> It will become visited
+- Until then -> it is being visited
+
+- There is a Cycle!!! Why? Because we visit again a vertex that's being visited
+
+> Example:
+- Let's consider a graph like this:
+> ![topological4](images/topological4a.png)
+
+
+> ![topological4](images/topological4b.png) Being visited: 1
+
+> ![topological4](images/topological4c.png) Being visited: 1, 2
+
+
+> ![topological4](images/topological4d.png) Being visited: 1, 2, 4
+
+> ![topological4](images/topological4e.png) Being visited: 1, 2, 4, 8
+
+
+> ![topological4](images/topological4f.png)
+> - Being visited: 1, 2 4, 8; 8 is a leaf so 8 now is mark visited, and remove from being visited --> being visited list : 1, 2, 4
+
+
+> ![topological4](images/topological4g.png)
+> - Being visted: 1, 2, 4; BackTrack to 4, and 4 is still being visted, and has child 9 --> now 9 is being visted --> Being visited list : 1, 2, 4, 9
+
+> ![topological4](images/topological4h.png)
+> - Being visited: 1, 2, 4, 9; 9 is a leaf so 9 now is mark visited, and remove from being visited --> being visited list : 1, 2, 4
+
+> ![topological4](images/topological4i.png)
+> - Being visited: 1, 2, 4; backtrack to 4 and all children of 4 is visited, --> 4 now marked as visited and remove from being visited --> Being visited list: 1, 2
+
+> ![topological4](images/topological4j.png)
+> - Being visited list: 1, 2; Backtrack to 2, and two has 5 is child --> visited 5 and marked as being visited --> being visited list: 1, 2, 5.
+> - Then 5 visited 1, and 1 is being visited. Therefore, thre is a cycle!!!
+
+<b>===> THERE IS A CYCLE!!!</b> Why? Because we visit again a vertex that's being visited
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class CycleDetectionDFS {
+
+  // in case if there is more than 1 un-connected graphs
+  public void detectCycle(List<VertexCycle> vertexList) {
+    for(VertexCycle v : vertexList)
+      if(!v.isVisited())
+        dfs(v);
+  }
+
+  // if there is an connected graph, we just start at a root vertex
+  private void dfs(VertexCycle vertex) {
+
+    System.out.println("DFS on vetex " + vertex);
+    vertex.setBeingVisited(true);
+
+    // iterate all the neighbours(v's) of this vertex
+    for(VertexCycle v : vertex.getNeighbourList() ) {
+
+      System.out.println("Visiting the neighbours of vertex " + vertex);
+
+      // if this vertex (being visited) is visiting a vertex v that is being visited --> Cycle
+      if(v.isBeingVisited()) {
+        System.out.println("There is a backward edge --> There is Cycle !!!");
+        return ;
+      }
+      if(!v.isVisited()){
+        System.out.println("Visiting vertex " + v + " recursively...");
+        v.setVisited(true);
+        dfs(v);
+      }
+    }
+
+    System.out.println("Set vertex " + vertex + " setBeingVisited(false) and visited(true) ... \n");
+    // reach the end (leaf) --> no longer in visiting process
+    vertex.setBeingVisited(false);
+    vertex.setVisited(true);
+  }
+
+  public static void main(String[] args) {
+    VertexCycle v1 = new VertexCycle("1");
+    VertexCycle v2 = new VertexCycle("2");
+    VertexCycle v4 = new VertexCycle("4");
+    VertexCycle v5 = new VertexCycle("5");
+    VertexCycle v8 = new VertexCycle("8");
+    VertexCycle v9 = new VertexCycle("9");
+
+    //Cycle
+    v1.addNeighbour(v2); v5.addNeighbour(v1);
+    v2.addNeighbour(v4); v2.addNeighbour(v5);
+
+    v4.addNeighbour(v8); v4.addNeighbour(v9);
+
+    List<VertexCycle> vertices = new ArrayList<>();
+    vertices.add(v1);
+    vertices.add(v2);
+    vertices.add(v4);
+    vertices.add(v5);
+    vertices.add(v8);
+    vertices.add(v9);
+
+    CycleDetectionDFS f = new CycleDetectionDFS();
+    f.detectCycle(vertices);
+  }
+}
+/*
+DFS on vetex 1
+Visiting the neighbours of vertex 1
+Visiting vertex 2 recursively...
+DFS on vetex 2
+Visiting the neighbours of vertex 2
+Visiting vertex 4 recursively...
+DFS on vetex 4
+Visiting the neighbours of vertex 4
+Visiting vertex 8 recursively...
+DFS on vetex 8
+Set vertex 8 setBeingVisited(false) and visited(true) ...
+
+Visiting the neighbours of vertex 4
+Visiting vertex 9 recursively...
+DFS on vetex 9
+Set vertex 9 setBeingVisited(false) and visited(true) ...
+
+Set vertex 4 setBeingVisited(false) and visited(true) ...
+
+Visiting the neighbours of vertex 2
+Visiting vertex 5 recursively...
+DFS on vetex 5
+Visiting the neighbours of vertex 5
+There is a backward edge --> There is Cycle !!!
+Set vertex 2 setBeingVisited(false) and visited(true) ...
+
+Set vertex 1 setBeingVisited(false) and visited(true) ...
+*/
+```
