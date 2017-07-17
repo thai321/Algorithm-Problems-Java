@@ -419,7 +419,7 @@ public class RodCutting {
   - Generate all the subsets of the given set of integers
   - <b>N</b> is the number of integers in the set <b>S</b>
   - Check whether the sum of all subsets is equal to <b>S</b> or not
-  - Time complexity: exponential // <b>O(N * 2<sup>N</sup>)
+  - Time complexity: exponential // <b>O(N * 2<sup>N</sup>)</b>
 2) <u>Dynamic Programming:</u> we want to avoid calculating the same problems over and over again ... we create a dynamic programming table and memoize
 
 ```java
