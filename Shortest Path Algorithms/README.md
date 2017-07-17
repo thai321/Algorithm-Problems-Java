@@ -175,6 +175,155 @@ def DijkstraAlgorithm(Graph, source)
 - If we want the path itself: we have to <b>"Back Track"</b>, have to store predecessors
 
 
+```java
+public class Edge {
+  private double weight;
+  private Vertex startVertex;
+  private Vertex targetVertex;
+
+  public Edge(double weight, Vertex startVertex, Vertex targetVertex) {
+    this.weight = weight;
+    this.startVertex = startVertex;
+    this.targetVertex = targetVertex;
+  }
+
+  public double getWeight() { return weight; }
+  public void setWeight(double weight) { this.weight = weight; }
+
+  public Vertex getStartVertex() { return startVertex; }
+  public void setStartVertex(Vertex startVertex) { this.startVertex = startVertex; }
+
+  public Vertex getTargetVertex() { return targetVertex; }
+  public void setTargetVertex(Vertex targetVertex) { this.targetVertex = targetVertex; }
+}
+```
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class Vertex implements Comparable<Vertex> { // we want to compare 2 vertex by their distances
+
+  private String name;
+  private List<Edge> adjaceciesList;
+
+  private boolean visited;
+  private Vertex predecessor;
+  private double distance = Double.MAX_VALUE;
+
+  public Vertex(String name) {
+    this.name = name;
+    this.adjaceciesList = new ArrayList<>();
+  }
+
+  public void addNeighour(Edge edge) {
+    this.adjaceciesList.add(edge);
+  }
+
+  public String getName() { return name; }
+  public void setName(String name) { this.name = name; }
+
+  public List<Edge> getAdjaceciesList() { return adjaceciesList; }
+  public void setAdjaceciesList(List<Edge> adjaceciesList) { this.adjaceciesList = adjaceciesList; }
+
+
+  public boolean isVisited() { return visited; }
+  public void setVisited(boolean visited) { this.visited = visited; }
+
+
+  public Vertex getPredecessor() { return predecessor; }
+  public void setPredecessor(Vertex predecessor) { this.predecessor = predecessor; }
+
+
+  public double getDistance() { return distance; }
+  public void setDistance(double distance) { this.distance = distance; }
+
+
+  @Override
+  public String toString(){ return this.name; }
+
+  @Override
+  public int compareTo(Vertex otherVertex) {
+    return Double.compare(this.distance, otherVertex.getDistance());
+    // 0: same, -1: this.distance < otherVertex's distance, 1: this.distance > otherVertex's distance,
+  }
+}
+```
+
+```java
+import java.util.PriorityQueue;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Collections;
+
+public class Dijkstra {
+
+  public void computePaths(Vertex sourceVertex) {
+    sourceVertex.setDistance(0); // shortest distance from source to source(itself) is 0
+    PriorityQueue<Vertex> priorityQueue = new PriorityQueue<>();
+    priorityQueue.add(sourceVertex);
+
+    while(!priorityQueue.isEmpty()) {
+      Vertex actualVetex = priorityQueue.poll();
+
+      for(Edge edge : actualVetex.getAdjaceciesList()) {
+        Vertex v = edge.getTargetVertex();
+
+        double newDistance = actualVetex.getDistance() + edge.getWeight();
+
+        if(newDistance < v.getDistance()){
+          priorityQueue.remove(v);
+          v.setDistance(newDistance);
+          v.setPredecessor(actualVetex);
+          priorityQueue.add(v);
+        }
+      }
+    }
+  }
+
+  // get the shortest path from source vertex to targetVertex
+  public List<Vertex> getShortestPathTo(Vertex targetVertex) {
+    List<Vertex> shortestpathToTarget = new ArrayList<>();
+    //BACKTRACK
+    for(Vertex vertex = targetVertex; vertex != null; vertex = vertex.getPredecessor()) {
+      shortestpathToTarget.add(vertex);
+    }
+    Collections.reverse(shortestpathToTarget); // reverse the list to get the right path order
+    return shortestpathToTarget;
+  }
+
+  public static void main(String[] args) {
+    Vertex v0 = new Vertex("A");
+    Vertex v1 = new Vertex("B");
+    Vertex v2 = new Vertex("C");
+
+    v0.addNeighour(new Edge(1,v0,v1));
+    v0.addNeighour(new Edge(3,v0,v2));
+    v1.addNeighour(new Edge(1,v1,v2));
+
+    Dijkstra algorithm = new Dijkstra();
+    algorithm.computePaths(v0);
+
+    System.out.println(algorithm.getShortestPathTo(v2));
+    //    1
+    // A -- B
+    //  `   |
+    //  1`  |1
+    //    ` |
+    //      C
+    // ---> shortest path order = [A, C]
+
+    //    1
+    // A -- B
+    //  `   |
+    //  3`  |1
+    //    ` |
+    //      C
+    // ---> shortest path order = [A, B, C]
+  }
+}
+```
+
 
 ## Bellman-Ford algorithm
 - Invented in 1958 by Bellman and Ford independently
