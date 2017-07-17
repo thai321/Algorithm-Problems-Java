@@ -1,0 +1,64 @@
+strict digraph g {
+
+	A -> B [label = 5 ] A -> E [label = 9] A -> H [label = 8]
+	B -> D [label = 15]; B -> H [label = 4]; B -> C [label = 12]
+	C -> D [label = 3]; C -> G [label = 11];
+	D -> G [label = 9];
+	E -> F [label = 4]; E -> G [label = 20]; E -> H [label = 5];
+	F -> C [label = 1]; F -> G [label = 13];
+	H -> C [label = 7]; H -> F [label = 6]
+
+	ratio = 0.8;
+	rankdir=LR
+	ranksep=0.2
+	{ rank= same; A }
+	{ rank= same; E }
+	{ rank= same; B H }
+	{ rank= same; F }
+	{ rank= same; C }
+	{ rank= same; G D }
+
+	B,C,D,E,F,G,H [ xlabel="inf"];
+	A [ xlabel="0", fillcolor=green, style=filled];
+	B [fillcolor=green, style=filled];
+	H [fillcolor=green, style=filled];
+	E [fillcolor=green, style=filled];
+	F [fillcolor=green, style=filled];
+	C [fillcolor=green, style=filled];
+	D [fillcolor=green, style=filled];
+	G [fillcolor=green, style=filled];
+
+
+	A -> {B,E,H} [color = green];
+	B -> {D,C,H} [color = green];
+	H -> {C,F} [color = green];
+	E -> {H, G,F} [color = green];
+	F -> {C, G} [color = green];
+	C -> {D, G} [color = green];
+	D -> {G} [color = green];
+
+	A -> {E} [color = purple];
+	E -> {F} [color = purple];
+	F -> {C} [color = purple];
+	C -> {D G} [color = purple];
+
+	B [ xlabel = 5, fontcolor = blue]
+	H [ xlabel = 8, fontcolor = blue]
+	E [ xlabel = 9, fontcolor = blue]
+	D [ xlabel = 17, fontcolor = blue]
+	C [ xlabel = 14, fontcolor = blue]
+	F [ xlabel = 13, fontcolor = blue]
+	G [ xlabel = 25, fontcolor = blue]
+
+
+	forcelabels=true;
+	node [shape=plaintext]
+	label = "
+	We have Constructed the shortest path tree:
+	We just have to calculated once,
+	Then reuse it as many times as we want
+	Example: What is the shortest path
+	- A to C: it takes 14 units: A -> E -> F -> C
+	- A to G: it takes 25 units: A -> E -> F -> C -> G
+	"
+}
