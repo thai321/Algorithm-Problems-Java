@@ -1,0 +1,40 @@
+graph G {
+/*graph [overlap = false];*/
+	A -- D [label = 2]
+	A -- B [label = 7]
+	A -- C [label = 5]
+	B -- E [label = 3]
+	B -- F [label = 8]
+	C -- D [label = 10]
+	C -- E [label = 4]
+	D -- F [label = 2]
+	E -- F [label = 6]
+
+	ratio = 0.5
+	rankdir=TB
+	ranksep=0.7
+
+	{ rank= same; A D}
+	{ rank= same; C }
+	{ rank= same; B F }
+	{ rank= same; D }
+
+	A [fillcolor=green, style=filled];
+	D [fillcolor=green, style=filled];
+	F [fillcolor=green, style=filled];
+	C [fillcolor=green, style=filled];
+	B [fillcolor=green, style=filled];
+	E [fillcolor=green, style=filled];
+
+	/*A -- {B C D} [color = red];*/
+
+	/*forcelabels=true;*/
+	node [shape=plaintext]
+	label = "
+		Same thing: Get E
+		Visit E's neighbors: B, C F
+		nodes B, C, F: already visited --> no need to visit
+		--> Done
+	"
+
+}

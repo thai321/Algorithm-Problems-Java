@@ -76,3 +76,158 @@ def DijkstraAlgorithm(Graph, source)
 ![Dijsktra1zd](docs/Dijsktra1zd.png)
 ![Dijsktra1zf](docs/Dijsktra1zf.png)
 ![Dijsktra1zg](docs/Dijsktra1zg.png)
+
+
+
+## Dijsktra Algorithm in un-directed graph (adjacency matrix)
+![Dijsktra2a](docs/Dijsktra2a.png)
+
+| v  | A | B | C | D | E | F |
+|---|---|---|---|---|---|---|
+|   |   |   |   |   |   |   |
+
+------
+![Dijsktra2b](docs/Dijsktra2b.png)
+| v | A | B   | C   | D   | E   | F   |
+|---|---|-----|-----|-----|-----|-----|
+| A | <font color="red">0 | inf | inf | inf | inf | inf |
+
+------
+| v | A | B   | C   | D   | E   | F   |
+|---|---|-----|-----|-----|-----|-----|
+| A | <font color="red">0 | inf | inf | inf | inf | inf |
+| A |   | 7   | 5   | <font color="red">2   | inf | inf |
+
+![Dijsktra2c](docs/Dijsktra2c.png)
+
+------
+| v | A | B   | C   | D   | E   | F   |
+|---|---|-----|-----|-----|-----|-----|
+| A | <font color="red">0 | inf | inf | inf | inf | inf |
+| A |   | 7   | 5   | <font color="red">2   | inf | inf |
+| D |   | 7   | 5   |   | inf | <font color="red">4 |
+
+![Dijsktra2c](docs/Dijsktra2d.png)
+
+
+------
+| v | A | B   | C   | D   | E   | F   |
+|---|---|-----|-----|-----|-----|-----|
+| A | <font color="red">0 | inf | inf | inf | inf | inf |
+| A |   | 7   | 5   | <font color="red">2   | inf | inf |
+| D |   | 7   | 5   |   | inf | <font color="red">4 |
+| F |   | 7   | <font color="red">5   |   | 10  | |
+
+![Dijsktra2c](docs/Dijsktra2f.png)
+
+
+------
+| v | A | B   | C   | D   | E   | F   |
+|---|---|-----|-----|-----|-----|-----|
+| A | <font color="red">0 | inf | inf | inf | inf | inf |
+| A |   | 7   | 5   | <font color="red">2   | inf | inf |
+| D |   | 7   | 5   |   | inf | <font color="red">4 |
+| F |   | 7   | <font color="red">5   |   | 10  | |
+| C |   | <font color="red">7   |    |   | 9 | |
+
+![Dijsktra2c](docs/Dijsktra2f2.png)
+
+
+------
+| v | A | B   | C   | D   | E   | F   |
+|---|---|-----|-----|-----|-----|-----|
+| A | <font color="red">0 | inf | inf | inf | inf | inf |
+| A |   | 7   | 5   | <font color="red">2   | inf | inf |
+| D |   | 7   | 5   |   | inf | <font color="red">4 |
+| F |   | 7   | <font color="red">5   |   | 10  | |
+| C |   | <font color="red">7   |    |   | 9 | |
+| B |   |   |    |   | <font color="red">9 | |
+
+![Dijsktra2c](docs/Dijsktra2g.png)
+
+
+------
+![Dijsktra2c](docs/Dijsktra2h.png)
+
+| v | A | B   | C   | D   | E   | F   |
+|---|---|-----|-----|-----|-----|-----|
+| A | <font color="red">0 | inf | inf | inf | inf | inf |
+| A |   | 7   | 5   | <font color="red">2   | inf | inf |
+| D |   | 7   | 5   |   | inf | <font color="red">4 |
+| F |   | 7   | <font color="red">5   |   | 10  | |
+| C |   | <font color="red">7   |    |   | 9 | |
+| B |   |   |    |   | <font color="red">9 | |
+
+- Conclusion: <b>Red values</b> represent what are the shortest path vlaues from <b>A</b> to the <b>given node</b>
+- If we want the path itself: we have to <b>"Back Track"</b>, have to store predecessors
+
+
+
+## Bellman-Ford algorithm
+- Invented in 1958 by Bellman and Ford independently
+- slower than Dijstra's but more robust: it can handle negative edge
+- Dijkstra algorithm choose the edge greedely, with the lowest cost:
+  - Bellman-Ford relaxes all edges at the same time for <b>V-1</b> iteration
+- Running time is <b>O(V*E)</b>
+- Does <b>(V-1)</b> iterations <b>(+1)</b> to detect cycles: if cost decreases in the <b>V-th</b> iteration, than there is negative cycle, because all the paths are traversen up to the <b>(V-1)</b> iteration !!!
+
+### What is the problem?
+- <u>Negative cycle:</u>
+
+![BellManFord1a](docs/BellManFord1a.png)
+
+- What is the problem?
+  - If we would like to find a path with the minimum cost we have
+  - to go A -> B -> C -> A <b>to decrease the overall cost</b>
+  - <b>And a next cycle: decrease the cost again</b>
+  - <b>And again ...</b>
+- Real life scenarios: no negative cycles at all ...
+- but sometimes we transform a problem into a graph with positive/ negative edges weight
+- And looking for some negative cycles !!!
+
+
+### <u>Bellman-Ford:</u> pseudocode
+```ruby
+def BellmanFordAlgorithm(vertices, edges, source)
+  distance[source] = 0
+
+  for v in Graph
+    distance[v] = inf
+    predicessor[v] = undefined # precious node in the shortest path
+
+=begin
+For all edges, if the distance to the destination can be shortened
+by taking the edge, the distance is updated to the new lower value
+V-1 times -> we make relaxation
+=end
+  for i = 1 ... num_vertices - 1
+    for each edge(u,v) with weight w in edges
+
+      tempDist = distance[u] + w
+
+      if tempDist < distance[v]
+        distance[u] = tempDist
+        predecessor[v] = u
+
+=begin
+Since the longest possible path without a cycle can have (V-1) edges,
+the edges must be scanned (V-1) times to ensure the shortest path
+has been found for all nodes
+*** A Final scan of all the edges is performed and if any distance
+is updated -> means there is a negative cycle !!!
+=end
+
+  for each edge(u,v) with weight w in edges
+    if distance[u] + w < distance[v]
+      error: " Negative cycle detected"
+```
+
+#### <b>1970: <u>Yen optimization</u></b>
+- Yen algorithm: It is the Bellman-Ford algorithm with some optimization.
+- We can terminate the algorithm if there is no change in the distances between two iterations !!!
+- (We use the same technique in bubble sort)
+
+- <b><u>Application:</u></b>
+  - cycle detection can prove to be very important
+  - Negative cycles as well -> we have to run the Bellman-Ford algorithm that can handle negative edge weights by default
+  - On the FOREX market it can detect arbitrage situations !!!

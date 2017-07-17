@@ -1,0 +1,15 @@
+digraph G {
+  splines=line;
+
+  ratio = 0.5;
+  ranksep=1;
+
+  A -> B [label = 1]
+  B -> C [label = -10]
+  C -> A [label = 5]
+
+  {rank=same; A }
+  {rank=same; B C }
+
+
+}
