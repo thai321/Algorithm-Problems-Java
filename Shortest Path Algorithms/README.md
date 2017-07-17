@@ -88,77 +88,90 @@ def DijkstraAlgorithm(Graph, source)
 
 ------
 ![Dijsktra2b](docs/Dijsktra2b.png)
+
 | v | A | B   | C   | D   | E   | F   |
 |---|---|-----|-----|-----|-----|-----|
-| A | <font color="red">0 | inf | inf | inf | inf | inf |
+| A | <b>[0]</b> | inf | inf | inf | inf | inf |
 
 ------
+
 | v | A | B   | C   | D   | E   | F   |
 |---|---|-----|-----|-----|-----|-----|
-| A | <font color="red">0 | inf | inf | inf | inf | inf |
-| A |   | 7   | 5   | <font color="red">2   | inf | inf |
+| A | <b>[0]</b> | inf | inf | inf | inf | inf |
+| A |   | 7   | 5   | <b>[2]</b>    | inf | inf |
+
 
 ![Dijsktra2c](docs/Dijsktra2c.png)
 
 ------
+
 | v | A | B   | C   | D   | E   | F   |
 |---|---|-----|-----|-----|-----|-----|
-| A | <font color="red">0 | inf | inf | inf | inf | inf |
-| A |   | 7   | 5   | <font color="red">2   | inf | inf |
-| D |   | 7   | 5   |   | inf | <font color="red">4 |
+| A | <b>[0]</b>  | inf | inf | inf | inf | inf |
+| A |   | 7   | 5   | <b>[2]</b>    | inf | inf |
+| D |   | 7   | 5   |   | inf | <b>[4]</b>  |
+
 
 ![Dijsktra2c](docs/Dijsktra2d.png)
 
 
 ------
+
 | v | A | B   | C   | D   | E   | F   |
 |---|---|-----|-----|-----|-----|-----|
-| A | <font color="red">0 | inf | inf | inf | inf | inf |
-| A |   | 7   | 5   | <font color="red">2   | inf | inf |
-| D |   | 7   | 5   |   | inf | <font color="red">4 |
-| F |   | 7   | <font color="red">5   |   | 10  | |
+| A | <b>[0]</b>  | inf | inf | inf | inf | inf |
+| A |   | 7   | 5   | <b>[2]</b>    | inf | inf |
+| D |   | 7   | 5   |   | inf | <b>[4]</b>  |
+| F |   | 7   | <b>[5]</b>   |   | 10  | |
+
 
 ![Dijsktra2c](docs/Dijsktra2f.png)
 
 
 ------
+
+
 | v | A | B   | C   | D   | E   | F   |
 |---|---|-----|-----|-----|-----|-----|
-| A | <font color="red">0 | inf | inf | inf | inf | inf |
-| A |   | 7   | 5   | <font color="red">2   | inf | inf |
-| D |   | 7   | 5   |   | inf | <font color="red">4 |
-| F |   | 7   | <font color="red">5   |   | 10  | |
-| C |   | <font color="red">7   |    |   | 9 | |
+| A | <b>[0]</b>  | inf | inf | inf | inf | inf |
+| A |   | 7   | 5   | <b>[2]</b>    | inf | inf |
+| D |   | 7   | 5   |   | inf | <b>[4]</b>  |
+| F |   | 7   | <b>[5]</b>   |   | 10  | |
+| C |   | <b>[7]</b>   |    |   | 9 | |
+
 
 ![Dijsktra2c](docs/Dijsktra2f2.png)
 
 
 ------
+
 | v | A | B   | C   | D   | E   | F   |
 |---|---|-----|-----|-----|-----|-----|
-| A | <font color="red">0 | inf | inf | inf | inf | inf |
-| A |   | 7   | 5   | <font color="red">2   | inf | inf |
-| D |   | 7   | 5   |   | inf | <font color="red">4 |
-| F |   | 7   | <font color="red">5   |   | 10  | |
-| C |   | <font color="red">7   |    |   | 9 | |
-| B |   |   |    |   | <font color="red">9 | |
+| A | <b>[0]</b>  | inf | inf | inf | inf | inf |
+| A |   | 7   | 5   | <b>[2]</b>    | inf | inf |
+| D |   | 7   | 5   |   | inf | <b>[4]</b>  |
+| F |   | 7   | <b>[5]</b>   |   | 10  | |
+| C |   | <b>[7]</b>   |    |   | 9 | |
+| B |   |   |    |   | <b>[9]</b>  | |
+
 
 ![Dijsktra2c](docs/Dijsktra2g.png)
 
 
 ------
+
 ![Dijsktra2c](docs/Dijsktra2h.png)
 
 | v | A | B   | C   | D   | E   | F   |
 |---|---|-----|-----|-----|-----|-----|
-| A | <font color="red">0 | inf | inf | inf | inf | inf |
-| A |   | 7   | 5   | <font color="red">2   | inf | inf |
-| D |   | 7   | 5   |   | inf | <font color="red">4 |
-| F |   | 7   | <font color="red">5   |   | 10  | |
-| C |   | <font color="red">7   |    |   | 9 | |
-| B |   |   |    |   | <font color="red">9 | |
+| A | <b>[0]</b>  | inf | inf | inf | inf | inf |
+| A |   | 7   | 5   | <b>[2]</b>    | inf | inf |
+| D |   | 7   | 5   |   | inf | <b>[4]</b>  |
+| F |   | 7   | <b>[5]</b>   |   | 10  | |
+| C |   | <b>[7]</b>   |    |   | 9 | |
+| B |   |   |    |   | <b>[9]</b>  | |
 
-- Conclusion: <b>Red values</b> represent what are the shortest path vlaues from <b>A</b> to the <b>given node</b>
+- Conclusion: <b>[#] values</b> represent what are the shortest path vlaues from <b>A</b> to the <b>given node</b>
 - If we want the path itself: we have to <b>"Back Track"</b>, have to store predecessors
 
 

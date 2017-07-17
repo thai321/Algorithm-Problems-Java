@@ -154,7 +154,7 @@ public class DFS {
 - Topological <b>ordering of a directed graph</b> is a linear ordering of its vertices such that for every directed edge <b>uv</b> from vertex <b>u</b> to vertex <b>v, u</b> comes before <b>v</b> in the ordering.
 - For instance, the vertices of the graph may represent tasks to be performed, and the edges amy represent constraints that one task must be performed before another
 - In this application, a topological ordering is just a valid sequence for the tasks
-- We can use topological ordering only if the graph has no directed cycles <b>(DAG)<b>
+- We can use topological ordering only if the graph has no directed cycles <b>(DAG)</b>
 - Any <b>DGA</b> has at least one topological order
 
 

@@ -46,12 +46,14 @@
       - Re-arranges the list in a way that all elements less than pivot are on left side of pivot and others on right. it then returns index of the pivot element
 
 Generate a pivot item ar random. Let's say at 5
-| 7 | -2 |<span style="background-color: #FFFF00"> 5 </span>| 8 | 1  | 6 |
+
+
+| 7 | -2 | <b>[5]</b> | 8 | 1  | 6 |
 |---|----|---|---|----|---|
 
 Then,
 
-| 1 | -2 |<span style="background-color: #FFFF00"> 5 </span>| 8 | 7  | 6 |
+| 1 | -2 | <b>[5]</b> | 8 | 7  | 6 |
 |---|----|---|---|----|---|
 
 - We are done, we return the index of the pivot! Of course in the course of the algorithm, we may have to make several parititon procedure!!!
