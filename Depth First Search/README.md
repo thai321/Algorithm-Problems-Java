@@ -161,7 +161,7 @@ public class DFS {
 - Linear time complexity
 - It is very important in project management
 - Another important fact has something to do with Hamiltonian cycles
-- <b>Hamiltonian path:<b> it is a path in an undirected or directed graph that visits each vertex exactly once.
+- <b>Hamiltonian path:</b> it is a path in an undirected or directed graph that visits each vertex exactly once.
 - If a Hamiltonian path exists, the topological sort order is unique, no other orderresprects the edges of the path. Conversely, if a topological sort does not form a Hailtonian path, the DAGwill hae two or more valid topological orderings
 - Finding Hamiltonian path is NP complete problem: but we can decide whether such a path exist in linear time
 
@@ -177,7 +177,7 @@ public class DFS {
 > - Calculus requirement: has to take Fourier Series.
 > - Can't complete Linear Algebra, because we have to complete Calculus first
 > - <b>The order in which you have to complete the courses:
->    - Fourier series -> Caculus -> Linear Algebra -> Differential Equations -> Stochastic Processes
+>    - Fourier series -> Caculus -> Linear Algebra -> Differential Equations -> Stochastic Processes</b>
 
 #### Topological implementation using DFS
 ![topological3](images/topological3.png)

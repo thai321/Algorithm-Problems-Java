@@ -18,7 +18,7 @@
 - We should use an associative array abstract data type (hastable) to store the solution for the subproblems // <b>O(1)</b> time complexity
 - On every <b>f()</b> method call -> we insert the calculated value if necessary
 - Why is it good? Instead of the exponential time complexity we will have <b>O(N)</b> time complexity + requires <b>O(N)</b> space
-  - Recursive approach: <b>O(2<sup>n</sup>)
+  - Recursive approach: <b>O(2<sup>n</sup>)</b>
   - Dynamic programming: <b>O(N)</b>
 
 ```java
@@ -112,7 +112,7 @@ public class Fibonacci {
 
 >                    Do not take i-th item      we take i-th item
 
-> But !!! We are only considering <b>S[i - 1][w - w<sub>i</sub>]</b> if it can fit <b>w >= w<sub>i</sub>
+> But !!! We are only considering <b>S[i - 1][w - w<sub>i</sub>]</b> if it can fit <b>w >= w<sub>i</sub></b>
 
 
 ### <u>Time complexity</u>
@@ -222,7 +222,7 @@ public class Knapsack {
 
 #### <u>Dynamic programming</u>
 - We have to create a solution matrix:
->  - <b> dpTable[numOfCoins + 1][totalAmount + 1]
+>  - <b> dpTable[numOfCoins + 1][totalAmount + 1]</b>
 
 >                 rows              columns
 
@@ -409,7 +409,7 @@ public class RodCutting {
 ```
 ## Subset Sum Problem
 - One of the most important problems in complexity theory
-- The problem: given an <b>S</b> set of integers, is there a non-empty subset whose <b>s</b> sum is zero or a given integer?
+- The problem: given an <b>S</b> set of integers, is there a non-empty subset whose <b>S</b> sum is zero or a given integer?
 - For example: given the set <b>{5,2,1,3}</b> and <b>s=9</b>, the answer is <b>YES</b> because the subset {5,3,1} sums to <b>9</b>
 - The problem is <b>NP-complete</b> -> we have eifficient algorithsm when the problem is small !!!
 - Special case of knapsack-problem
