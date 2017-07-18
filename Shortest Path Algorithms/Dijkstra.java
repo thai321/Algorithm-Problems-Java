@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Collections;
 
+// Dijkstra method: )(E + V*logV)
 public class Dijkstra {
 
   public void computePaths(Vertex sourceVertex) {

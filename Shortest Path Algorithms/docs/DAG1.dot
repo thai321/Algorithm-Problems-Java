@@ -1,0 +1,16 @@
+digraph G {
+  A -> C [label = 2]
+  A -> D [label = 10]
+  B -> D [label = 1]
+  C -> B [label = 3]
+  C -> E [label = 3]
+  E -> B [label = 3]
+  E -> D [label = 6]
+
+  node [shape=plaintext]
+	label = "
+  AcyclicShortestPath from A to D:
+  Cost = 2 + 3 + 1 = 6
+  Path: A -> C -> B -> D
+	"
+}

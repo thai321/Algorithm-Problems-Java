@@ -2,6 +2,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
 
+//BellmanFord algorithm: O(E*V)
 public class BellmanFord {
 
   private List<Edge> edgeList;
