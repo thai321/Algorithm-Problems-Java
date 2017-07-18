@@ -539,10 +539,10 @@ public class BellmanFord {
 
 #### <u>Out put:</u>
 
-![BellmanFord2a](docs/BellmanFord2a.png)
+![BellManFord2a](docs/BellManFord2a.png)
 
-![BellmanFord2b](docs/BellmanFord2b.png)
+![BellManFord2b](docs/BellManFord2b.png)
 
-![BellmanFord2c](docs/BellmanFord2c.png)
+![BellManFord2c](docs/BellManFord2c.png)
 
-![BellmanFord2d](docs/BellmanFord2d.png)
+![BellManFord2d](docs/BellManFord2d.png)
