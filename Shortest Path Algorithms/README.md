@@ -445,10 +445,12 @@ public class BellmanFord {
 
   private List<Edge> edgeList;
   private List<Vertex> vertexList;
+  private List<Vertex> cycleList;
 
   public BellmanFord(List<Edge> edgeList, List<Vertex> vertexList) {
     this.edgeList = edgeList;
     this.vertexList = vertexList;
+    this.cycleList = new ArrayList<>();
   }
 
   public void bellmanFord(Vertex sourceVertex) {
@@ -478,16 +480,31 @@ public class BellmanFord {
     //is updated -> means there is a negative cycle !!!
     for(Edge edge : edgeList) { // V-th iteration
       Vertex u = edge.getStartVertex();
-      Vertex v = edge.getTargetVertex();
+      Vertex v = edge.getTargetVertex(); // targetVertex
 
       if(u.getDistance() != Double.MAX_VALUE) {
         if(u.getDistance() + edge.getWeight() < v.getDistance()) { // Has NEGATIVE Cycle?
+
+          Vertex actualVetex = u;
+          Vertex targetVertex = v;
+
+          while(!actualVetex.equals(targetVertex)) {
+            this.cycleList.add(actualVetex);
+            actualVetex = actualVetex.getPredecessor();
+          }
+          this.cycleList.add(targetVertex);
+
+          System.out.print("CycleList: ");
+          System.out.println(getCycleList());
+
           System.out.println("There has been a NEGATIVE CYCLE detected ... ");
           return;
         }
       }
     }
   }
+
+  public List<Vertex> getCycleList() { return this.cycleList; }
 
   public List<Vertex> shortestPathTo(Vertex targetVertex) {
     List<Vertex> shortestpathToTarget = new ArrayList<>();
@@ -534,7 +551,6 @@ public class BellmanFord {
     bellmanFord.bellmanFord(v0); // start from source vertex v0
     shortestpathToTarget = bellmanFord.shortestPathTo(v2); // to C
     System.out.println(shortestpathToTarget);
-
   }
 }
 ```
@@ -547,7 +563,7 @@ public class BellmanFord {
 
 ![BellManFord2c](docs/BellManFord2c.png)
 
-![BellManFord2d](docs/BellManFord2d.png)
+![BellManFord2d1](docs/BellManFord2d1.png)
 
 
 ### DAG Shortest Path Algorithm
@@ -649,4 +665,37 @@ public class AcyclicShortestPath {
 ```
 
 #### <u>Output:</u>
+
 ![DAG1a](docs/DAG1a.png)
+
+
+## Arbitrage situations on FOREX introduction
+- Here is a table of exchange rates
+  - It contains the relative values
+    - are there any arbitrage opportunities?
+
+
+|     | USD   | EUR   | GBP   | CHF   | CAD   |
+|-----|-------|-------|-------|-------|-------|
+| **USD** | 1     | 0.741 | 0.657 | 1.061 | 1.011 |
+| **EUR** | 1.35  | 1     | 0.889 | 1.433 | 1.366 |
+| **GBP** | 1.521 | 1.126 | 1     | 1.614 | 1.538 |
+| **CHF** | 0.943 | 0.698 | 0.62  | 1     | 0.953 |
+| **CAD** | 0.955 | 0.732 | 0.65  | 1.049 | 1     |
+
+
+- What does it mean exactly?
+  - 1 USD = 0.741 EUR
+
+- **The vertices will be the currencies**
+- **The edges will be the relationships between the currencies thats in the currentcy table**
+- First we have to take the **natural logarithm** of the currencies
+- **We have to multiply every edge with -1**
+- We end up with a **directed negative weighted graph** where we are looking for negative cycles
+- **Bellman-Ford** algorithm can solve this problem
+  - **BellmanFord Algorithm** is going to find **negative cycle**
+
+
+## Longest Path Implementation
+- Negative all the weight
+- And run BellmanFord Algorithm :)

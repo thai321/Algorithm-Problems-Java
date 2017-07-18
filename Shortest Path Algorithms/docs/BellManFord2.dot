@@ -5,8 +5,8 @@ digraph G {
   ranksep=1;
 
   A -> B [label = 1]
-  A -> C [label = 3]
-  B -> C [label = 1]
+  B -> C [label = 2]
+  C -> A [label = -11]
 
   {rank=same; A B }
   {rank=same; C }
@@ -14,7 +14,9 @@ digraph G {
   forcelabels=true;
 	node [shape=plaintext]
 	label = "
-  From A to C: cost = 1 + 1 = 2
-  ---> shortest path order = [A, B, C]
+  From A to C: 1 + 2 + (-11) + 1 + 2 = -5
+  CycleList : [A, C, B] <--- BackTrack
+  There has been a NEGATIVE CYCLE detected ...
+  There is a shortest path from source to target, with cost: -5.0
 	"
 }

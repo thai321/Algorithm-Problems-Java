@@ -7,10 +7,12 @@ public class BellmanFord {
 
   private List<Edge> edgeList;
   private List<Vertex> vertexList;
+  private List<Vertex> cycleList;
 
   public BellmanFord(List<Edge> edgeList, List<Vertex> vertexList) {
     this.edgeList = edgeList;
     this.vertexList = vertexList;
+    this.cycleList = new ArrayList<>();
   }
 
   public void bellmanFord(Vertex sourceVertex) {
@@ -40,16 +42,31 @@ public class BellmanFord {
     //is updated -> means there is a negative cycle !!!
     for(Edge edge : edgeList) { // V-th iteration
       Vertex u = edge.getStartVertex();
-      Vertex v = edge.getTargetVertex();
+      Vertex v = edge.getTargetVertex(); // targetVertex
 
       if(u.getDistance() != Double.MAX_VALUE) {
         if(u.getDistance() + edge.getWeight() < v.getDistance()) { // Has NEGATIVE Cycle?
+
+          Vertex actualVetex = u;
+          Vertex targetVertex = v;
+
+          while(!actualVetex.equals(targetVertex)) {
+            this.cycleList.add(actualVetex);
+            actualVetex = actualVetex.getPredecessor();
+          }
+          this.cycleList.add(targetVertex);
+
+          System.out.print("CycleList: ");
+          System.out.println(getCycleList());
+
           System.out.println("There has been a NEGATIVE CYCLE detected ... ");
           return;
         }
       }
     }
   }
+
+  public List<Vertex> getCycleList() { return this.cycleList; }
 
   public List<Vertex> shortestPathTo(Vertex targetVertex) {
     List<Vertex> shortestpathToTarget = new ArrayList<>();
@@ -96,6 +113,7 @@ public class BellmanFord {
     bellmanFord.bellmanFord(v0); // start from source vertex v0
     shortestpathToTarget = bellmanFord.shortestPathTo(v2); // to C
     System.out.println(shortestpathToTarget);
+
 
   }
 }
