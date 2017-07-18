@@ -1,0 +1,40 @@
+graph G1 {
+  ratio=0.8;
+  ranksep=1;
+  rankdir = LR;
+
+  {rank = same;  A F}
+  {rank = same; C G}
+  {rank = same; B }
+  {rank = same; D E }
+
+  subgraph {
+      A -- B [label = 2, color = green]
+      A -- C [label = 6 style=invis]
+      A -- F [label = 10 style=invis]
+      A -- E [label = 5, style=invis]
+      B -- E [label = 3, color = green]
+      B -- D [label = 3, color = green]
+      C -- D [label = 1, color = green]
+      C -- F [label = 2, color = green]
+      E -- D [label = 4, color = red, style=invis]
+      F -- G [label = 5, color = green]
+      G -- D [label = 5, style=invis]
+
+      /*C, D [xlabel = "(0)"]
+      B [xlabel = "(1)"]
+      A [xlabel = "(2)"]*/
+
+      /*B, D [fillcolor=orange, style=filled];*/
+      /*A [fillcolor=green, style=filled];*/
+
+
+    }
+
+    node [shape=plaintext]
+  	label = "
+    We have a single set so it is the end of the algorithm,
+    Minimal cost is: 2 + 3 + 3 + 1 + 2 + 5 = 16
+    "
+
+}

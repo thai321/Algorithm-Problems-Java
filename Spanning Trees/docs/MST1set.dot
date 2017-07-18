@@ -1,0 +1,26 @@
+graph G1 {
+  ratio=0.8;
+  ranksep=1;
+  rankdir = TB;
+/*
+  {rank = same;  A B}
+  {rank = same; C}
+  {rank = same; F G}
+  {rank = same; G }*/
+
+  subgraph {
+      A [label = "A   B   E   C   D   F  G"]
+
+      /*C, D [xlabel = "(0)"]*/
+      /*B [xlabel = "(1)"]*/
+      /*A [xlabel = "(2)"]*/
+
+      A [fillcolor= orange, style=filled];
+      /*A [fillcolor=green, style=filled];*/
+
+
+    }
+
+    node [shape=plaintext]
+  	label = "join set F and set G togethere"
+}

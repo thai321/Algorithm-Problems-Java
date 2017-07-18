@@ -126,3 +126,149 @@ Finding the representative takes O(1) for every node!!!)**
 ![set4m](docs/set4m.png)
 
 ![set4n](docs/set4n.png)
+
+
+## Spanning Trees (Kruskal Algorithm)
+- A spanning tree of an **undirected G graph** is a subgraph that includes all the vertices of **G**
+- In general, a tree may have several spanning trees
+- We can assign a weight to each edge
+- A minimum spanning tree is then a spanning tree with weight less than or equal to the weight of every other spanning tree
+- Has lots of applications: in big data analysis, clustering algorithms, finding minimum cost for a telecommumnications company laying cable to a new neighborhood
+- Standard algorithms: **Prim's-Jarnik, Kruskal -> greddy algorithms**
+
+- A graph may have several spanning tree
+- usually we are looking for the minimum spanning tree: the spanning tree where the sum of edge weights is the lowest possible !!!
+
+![MST1a](docs/MST1a.png)
+
+- <u>Spanning Tree:</u>
+
+![MST1b](docs/MST1b.png)
+![MST1c](docs/MST1c.png)
+![MST1d](docs/MST1d.png)
+![MST1e](docs/MST1e.png)
+
+
+#### Kruskal-alogirthm
+- We sort the edges according to their edge weights
+- It can be done in **O(N * logN)** with mergesort or quicksort
+- Union find data structure: **"disjoint set"**
+  - We start adding edges to the MST and we want to make sure there will be no cycles in the spanning tree. It can be done in **O(log V)** with the help of union find data structure
+    - We could use a heap instead sorting the edges in the beginning but the running time would be the same. So sometimes Krukal's algorithm is implemented with priority queues.
+
+- Worst case running time: **O(E * logE)**, so we can use it for huge graphs too
+- If the edges are sorted: the algorithm will be ** quasi-linear**
+- If we multiply the weights with a constant or add a constant to the edge weights: the result will be the same
+  - In physics, an invariant is a property of the system that remains unchanged under some transformation.
+  - In Kruskal algorithm, spanning trees are invariant under the transformation of these weights (addition, multiplication)
+
+- <u>Steps:</u>
+  - **Given a graph with 7 vertices and 11 un-directed edges**
+
+![MST2a](docs/MST2a.png)
+
+![MST1seta](docs/MST1seta.png)
+
+- **We have to sort the edges: 1,2,2,3,3,4,5,5,5,6,10**
+- On every iteration we have to make sure whether by adding the new edge -> will there be a cycle or not ...
+- <u>**Disjoint sets:**</u> at the beginning we have as many sets as the number of vertices. When adding an edge, we merge two sets together ...  **the algorithm stops when there is only a single set remains**
+
+
+![MST2b](docs/MST2b.png)
+
+![MST1setb](docs/MST1setb.png)
+
+----
+
+![MST2c](docs/MST2c.png)
+
+![MST1setc](docs/MST1setc.png)
+
+
+---
+
+- **The edges: 1,[2],2,3,3,4,5,5,5,6,10**
+
+![MST2d](docs/MST2d.png)
+
+![MST1setd](docs/MST1setd.png)
+
+
+![MST2e](docs/MST2e.png)
+
+![MST1sete](docs/MST1sete.png)
+
+------
+
+- **The edges: 1,2,[2],3,3,4,5,5,5,6,10**
+
+![MST2f](docs/MST2f.png)
+
+![MST1setf](docs/MST1setf.png)
+
+![MST2g](docs/MST2g.png)
+
+![MST1setg](docs/MST1setg.png)
+
+-----
+
+- **The edges: 1,2,2,[3],3,4,5,5,5,6,10**
+
+![MST2h](docs/MST2h.png)
+
+![MST1seth](docs/MST1seth.png)
+
+![MST2i](docs/MST2i.png)
+
+![MST1seti](docs/MST1seti.png)
+
+
+-----
+
+- **The edges: 1,2,2,3,[3],4,5,5,5,6,10**
+
+![MST2j](docs/MST2j.png)
+
+![MST1setj](docs/MST1setj.png)
+
+![MST2k](docs/MST2k.png)
+
+![MST1setk](docs/MST1setk.png)
+
+
+
+-----
+
+- **The edges: 1,2,2,3,3,[4],5,5,5,6,10**
+
+![MST2l](docs/MST2l.png)
+
+![MST1setl](docs/MST1setl.png)
+
+![MST2m](docs/MST2m.png)
+
+
+-----
+
+- **The edges: 1,2,2,3,3,4,[5],5,5,6,10**
+
+![MST2n](docs/MST2n.png)
+
+![MST1setm](docs/MST1setm.png)
+
+![MST2o](docs/MST2o.png)
+
+
+-----
+
+- **The edges: 1,2,2,3,3,4,5,[5],5,6,10**
+
+![MST2p](docs/MST2p.png)
+
+![MST1setp](docs/MST1setp.png)
+
+![MST2q](docs/MST2q.png)
+
+![MST1setq](docs/MST1setq.png)
+
+![MST2q](docs/MST2r.png)
