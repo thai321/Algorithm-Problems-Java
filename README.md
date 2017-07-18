@@ -1,8 +1,31 @@
 # Algorithm Problems Java
+
 ## Recursion
-## Backtracking
+- sumRecursive
+- Factorial
+- GCD
+- HouseBuilding Head and Tail
+- Linear Binary Search
+- Tower Of HaNoi
+
 ## Selection
+- Quick Selection (kinda like Quick Sort)
+
+## Backtracking
+- Coloring Problem
+- Queens Problem
+- Hamiltonian Cycle
+- Knight Tour Problem
+- Maze Problem
+- Sodoku
+
+
 ## Dynamic Programming
+- Fibonacci
+- Knapsack Problem
+- Coin Change Problem
+- rod Cutting Problem
+- Subset Problem
 
 ## Graph
 - Graphs <b>G(V,E)</b> are mathematical structures to model pairwise relations between given objects
@@ -24,12 +47,28 @@
             Vertex[] neighbors;
           ```
 
-## Breadth First Search
+## Breadth First Search (BFS)
+- BFS
+- WebCrawler
 
-### Memory complexity: BFS vs DFS
+## Depth First Search (DFS)
+- DFS Implementation with Stack and Recusion
+- Topological Ordering
+- Cycle Detection
+- Maze Solving Algorithm (BackTrack)
+
+
+#### Memory complexity: BFS vs DFS
 
 - <b>In BFS</b>, at the leaves -> if we have N items stored in the balanced tree, then there will be <b>N/2</b> leave nodes.
   - So we have to store <b>O(N)</b> items if we want to traverse a tree that contains <b>N</b> items!!!
 - <b>In DFS</b>, we ahve to backtrack (pop item from stack): so basically we just have to store as many items n the stack as the height of the tree -> which is <b>log N</b> !!!
   - so the memory complexity will be <b>O(log N)</b>
 - That's why depth-first search is preferred most of the times. However, there may be some situations where VFS is better: AI, robot movements,..
+
+## Shortest Path Algorithms
+- Dijkstra Algorithm
+- Bellman-Ford Algorithm
+- DAG Shortest Path
+- FOREX Problem
+- Longest Path
