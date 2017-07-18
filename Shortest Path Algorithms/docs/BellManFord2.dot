@@ -1,0 +1,20 @@
+digraph G {
+  splines=line;
+
+  ratio = 0.5;
+  ranksep=1;
+
+  A -> B [label = 1]
+  A -> C [label = 3]
+  B -> C [label = 1]
+
+  {rank=same; A B }
+  {rank=same; C }
+
+  forcelabels=true;
+	node [shape=plaintext]
+	label = "
+  From A to C: cost = 1 + 1 = 2
+  ---> shortest path order = [A, B, C]
+	"
+}
