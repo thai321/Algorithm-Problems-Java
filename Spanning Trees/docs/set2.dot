@@ -1,0 +1,38 @@
+digraph G {
+
+ratio= 0.5
+  B -> A
+  C -> A
+  D -> A
+  E -> A
+  F -> A
+
+  rankdir=BT
+  { rank=same; A D }
+  /*{ rank=same; D }*/
+  { rank=same; E F B C}
+
+
+
+  B,C,D,E,F [xlabel = "0"]
+  A [xlabel = "2"]
+  D [xlabel = "1"]
+  F [xlabel = "0"]
+  E [xlabel = "0"]
+
+  A [fillcolor=green, style=filled];
+  /*F [fillcolor=orange, style=filled];*/
+  /*A [fillcolor=green, style=filled];*/
+  /*D [fillcolor=green, style=filled];*/
+
+
+  /*A, B [fillcolor=orange, style=filled];*/
+
+  node [shape=plaintext]
+  label = "
+    So A is the representative of all the nodes
+    A is parent of all nodes
+    Now finding all the nodes is very fast O(1)
+  "
+
+}

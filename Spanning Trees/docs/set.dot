@@ -1,0 +1,26 @@
+digraph G1 {
+  rankdir = BT;
+
+  subgraph {
+      B -> A
+      C -> A
+      D -> A
+
+      /*C, D [xlabel = "(0)"]
+      B [xlabel = "(1)"]
+      A [xlabel = "(2)"]*/
+
+      B, D [fillcolor=orange, style=filled];
+      A [fillcolor=green, style=filled];
+
+
+      {rank = same;  D}
+      {rank = same; A}
+      {rank = same; B C}
+    }
+
+    node [shape=plaintext]
+  	label = "
+  	 Attach D to representative (node A)
+  	"
+}
