@@ -22,7 +22,7 @@ public class PrimLazy {
 
       for(Edge edge : vertex.getAdjaceciesList()) {
         if(this.unVisitedVertices.contains(edge.getTargetVertex())) {
-          // This is called because it hasn't modified any content
+          // This is called Lazy because it hasn't modified any content
           // in the heap, just only add and remove
           this.edgeHeap.add(edge);
         }
