@@ -27,7 +27,7 @@ public class Kruskal {
       Vertex u = edge.getStartVertex();
       Vertex v = edge.getTargetVertex();
       System.out.print(u + " " + v + " -- ");
-      cost += edge.getWeigth();
+      cost += edge.getWeight();
     }
     System.out.println("Cost = " + cost);
   }

@@ -309,7 +309,7 @@ public class Edge implements Comparable<Edge>{
     this.targetVertex = targetVertex;
   }
 
-  public double getWeigth() { return this.weight; }
+  public double getWeight() { return this.weight; }
   public void setWeight(double weight) { this.weight = weight; }
 
   public Vertex getStartVertex() { return this.startVertex; }
@@ -321,7 +321,7 @@ public class Edge implements Comparable<Edge>{
 
   @Override
   public int compareTo(Edge otherEdge) {
-    return Double.compare(this.weight, otherEdge.getWeigth());
+    return Double.compare(this.weight, otherEdge.getWeight());
   }
 
 }
@@ -455,7 +455,7 @@ public class Kruskal {
       Vertex u = edge.getStartVertex();
       Vertex v = edge.getTargetVertex();
       System.out.print(u + " " + v + " -- ");
-      cost += edge.getWeigth();
+      cost += edge.getWeight();
     }
     System.out.println("Cost = " + cost);
   }
@@ -623,7 +623,7 @@ public class Edge implements Comparable<Edge>{
     this.targetVertex = targetVertex;
   }
 
-  public double getWeigth() { return this.weight; }
+  public double getWeight() { return this.weight; }
   public void setWeight(double weight) { this.weight = weight; }
 
   public Vertex getStartVertex() { return this.startVertex; }
@@ -634,7 +634,7 @@ public class Edge implements Comparable<Edge>{
 
   @Override
   public int compareTo(Edge otherEdge) {
-    return Double.compare(this.weight, otherEdge.getWeigth());
+    return Double.compare(this.weight, otherEdge.getWeight());
   }
 }
 ```
@@ -673,7 +673,7 @@ public class PrimLazy {
       Edge minEdge = this.edgeHeap.remove();
 
       this.spanningTree.add(minEdge);
-      this.fullCost += minEdge.getWeigth();
+      this.fullCost += minEdge.getWeight();
 
       // visiting this vertex's neighbours in the next iteration
       vertex = minEdge.getTargetVertex(); // for next iteration
@@ -685,7 +685,7 @@ public class PrimLazy {
     System.out.println("The minimum spanningTree cost = " + this.fullCost);
 
     for(Edge edge : spanningTree)
-      System.out.print(edge.getStartVertex() + "  " + edge.getTargetVertex() + " - " + edge.getWeigth() + ", ");
+      System.out.print(edge.getStartVertex() + "  " + edge.getTargetVertex() + " - " + edge.getWeight() + ", ");
   }
 
   public static void main(String[] args) {
@@ -729,6 +729,294 @@ public class PrimLazy {
   }
 }
 ```
+![MST4a](docs/MST4a.png)
+
+![MST4b](docs/MST4b.png)
+
+
+
+#### Prim Eager Version
+- The aim is the same: we want to construct a minimum spanning tree
+- **The lazy version -> we use a priority queue (heap)** in order to get the minimum edge weights + we insert all the edges to the heap without modifying the content !!!
+- **Eager version -> we update the content of the heap if necessary**
+- On every iteration we check whether is there already a shorted path to the spanning tree
+
+- <u>Steps:</u>
+
+![MST5a](docs/MST5a.png)
+
+-------
+
+- **EB - 7, not EB - 2 in the Heap content**
+
+![MST5b](docs/MST5b.png)
+
+-------
+
+- **EB - 7, not EB - 2 in the Heap content**
+
+![MST5c](docs/MST5c.png)
+
+-------
+
+
+![MST5d](docs/MST5d.png)
+
+
+-------
+
+![MST5e](docs/MST5e.png)
+
+-------
+
+![MST5f](docs/MST5f.png)
+
+-------
+
+![MST5g](docs/MST5g.png)
+
+
+-------
+
+![MST5h](docs/MST5h.png)
+
+-------
+
+![MST5i](docs/MST5i.png)
+
+-------
+
+![MST5j](docs/MST5j.png)
+
+
+
+#### Prim Eager Implementation
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class Vertex implements Comparable<Vertex>{
+
+  private String name;
+  private Edge minEdge; // shortest edge to the actual MST from a non MST vertex
+  private boolean visited;
+
+  // to detect whether heap is in need of refresh because of better weighted edge
+  private double distance = Double.POSITIVE_INFINITY;
+
+  private List<Edge> adjaceciesList;
+  private Node node; // for Kruskal algorithm
+
+  public Vertex(String name) {
+    this.name = name;
+    this.adjaceciesList = new ArrayList<>();
+  }
+
+  public Edge getMinEdge() { return minEdge; }
+  public void setMinEdge(Edge edge) { this.minEdge = edge; }
+
+  public double getDistance() { return distance; }
+  public void setDistance(double distance) { this.distance = distance; }
+
+  public void addEdge(Edge edge) { adjaceciesList.add(edge); }
+
+  public List<Edge> getAdjaceciesList() { return adjaceciesList; }
+  public void setAdjaceciesList(List<Edge> adjaceciesList) { this.adjaceciesList = adjaceciesList; }
+
+  public void setVisited(boolean visited) { this.visited = visited; }
+  public boolean isVisited() { return this.visited; }
+
+  public void setNode(Node node) { this.node = node; }
+  public Node getNode() { return this.node; }
+
+
+  @Override
+  public String toString() { return this.name; }
+
+  @Override
+  public int compareTo(Vertex otherVertex) {
+    return Double.compare(this.distance, otherVertex.getDistance());
+  }
+}
+```
+
+```java
+public class Edge implements Comparable<Edge>{
+
+  private double weight;
+  private Vertex startVertex;
+  private Vertex targetVertex;
+
+  public Edge(Vertex startVertex, Vertex targetVertex, double weight) {
+    this.weight = weight;
+    this.startVertex = startVertex;
+    this.targetVertex = targetVertex;
+  }
+
+  public double getWeight() { return this.weight; }
+  public void setWeight(double weight) { this.weight = weight; }
+
+  public Vertex getStartVertex() { return this.startVertex; }
+  public void setStartVertex(Vertex startVertex) { this.startVertex = startVertex; }
+
+  public Vertex getTargetVertex() { return this.targetVertex; }
+  public void setTargetVertex(Vertex weight) { this.targetVertex = targetVertex; }
+
+
+  @Override
+  public int compareTo(Edge otherEdge) {
+    return Double.compare(this.weight, otherEdge.getWeight());
+  }
+}
+```
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class Graph {
+
+	private List<Vertex> vertexList;
+	private List<Edge> edgeList;
+
+	public Graph() {
+		this.vertexList = new ArrayList<>();
+		this.edgeList = new ArrayList<>();
+	}
+
+	public void addVertex(Vertex vertex){ this.vertexList.add(vertex); }
+
+	public void addEdge(Edge edge){
+
+		Vertex startVertex = edge.getStartVertex();
+		Vertex targetVertex = edge.getTargetVertex();
+
+		this.vertexList.get(vertexList.indexOf(startVertex)).addEdge(new Edge(startVertex, targetVertex, edge.getWeight()));
+		this.vertexList.get(vertexList.indexOf(targetVertex)).addEdge(new Edge(targetVertex, startVertex, edge.getWeight()));
+
+	}
+
+	public List<Vertex> getVertexList() { return vertexList; }
+
+	public void setVertexList(List<Vertex> vertexList) { this.vertexList = vertexList; }
+
+	public List<Edge> getEdgeList() { return edgeList; }
+
+	public void setEdgeList(List<Edge> edgeList) { this.edgeList = edgeList; }
+}
+```
+
+```java
+import java.util.List;
+import java.util.PriorityQueue;
+
+public class PrimEager {
+
+  private List<Vertex> vertices;
+  private PriorityQueue<Vertex> heap;
+
+  public PrimEager(Graph graph) {
+    this.vertices = graph.getVertexList();
+    this.heap = new PriorityQueue<>();
+  }
+
+  public void spanningTree() {
+
+    for(Vertex vertex : vertices)
+      if(!vertex.isVisited())
+        makePrimsJarnik(vertex);
+  }
+
+  private void makePrimsJarnik(Vertex vertex) {
+
+    vertex.setDistance(0);
+    heap.add(vertex);
+
+    while(!heap.isEmpty()) {
+      Vertex v = heap.remove();
+      scanNeighbours(v);
+    }
+  }
+
+  private void scanNeighbours(Vertex vertex) {
+    vertex.setVisited(true);
+
+    // visit all the neighbours of vertex
+    for(Edge edge : vertex.getAdjaceciesList()) {
+
+      Vertex target = edge.getTargetVertex();
+      if(!target.isVisited()) {
+
+      // if true --> there is a cheaper path to target
+        if(edge.getWeight() < target.getDistance()) {
+
+          if(heap.contains(target)) // remove the old
+            heap.remove(target);
+
+
+          target.setDistance(edge.getWeight());
+          target.setMinEdge(edge); // MST
+
+          this.heap.add(target); // update the new
+        }
+      }
+    }
+  }
+
+  public void showMST() {
+
+    double sum = 0.0;
+    for(Vertex vertex : vertices) {
+      if(vertex.getMinEdge() != null) {
+        Edge e = vertex.getMinEdge();
+        System.out.println("Edge: " + e.getStartVertex() + " - " + e.getTargetVertex());
+        sum += e.getWeight();
+      }
+    }
+    System.out.println("Total Cost = " + sum);
+  }
+
+  public static void main(String[] args) {
+    Graph graph = new Graph();
+
+    Vertex v1 = new Vertex("A"); graph.addVertex(v1);
+    Vertex v2 = new Vertex("B"); graph.addVertex(v2);
+    Vertex v3 = new Vertex("C"); graph.addVertex(v3);
+    Vertex v4 = new Vertex("D"); graph.addVertex(v4);
+    Vertex v5 = new Vertex("E"); graph.addVertex(v5);
+    Vertex v6 = new Vertex("F"); graph.addVertex(v6);
+    Vertex v7 = new Vertex("G"); graph.addVertex(v7);
+
+    // Making Un-directed graph by adding both direction  A->B, B->A
+    Edge e1 = new Edge(v1,v2,2); graph.addEdge(e1); // A -- B : 2
+    Edge e2 = new Edge(v1,v3,6); graph.addEdge(e2); // A -- C : 6
+    Edge e3 = new Edge(v1,v5,5); graph.addEdge(e3); // A -- E : 5
+    Edge e4 = new Edge(v1,v6,10); graph.addEdge(e4); // A -- F : 10
+    Edge e5 = new Edge(v2,v5,3); graph.addEdge(e5); // B -- E : 3
+    Edge e6 = new Edge(v2,v4,3); graph.addEdge(e6); // B -- D : 3
+    Edge e7 = new Edge(v3,v4,1); graph.addEdge(e7); // C -- D : 1
+    Edge e8 = new Edge(v5,v4,4); graph.addEdge(e8); // E -- D : 4
+    Edge e9 = new Edge(v6,v7,3); graph.addEdge(e9); // F -- G: 3
+    Edge e10 = new Edge(v6,v3,2); graph.addEdge(e10); // F -- C: 2
+    Edge e11 = new Edge(v7,v4,5); graph.addEdge(e11); // G -- D: 5
+
+    PrimEager primEager = new PrimEager(graph);
+    primEager.spanningTree();
+    primEager.showMST();
+  }
+}
+/*
+Edge: A - B
+Edge: D - C
+Edge: B - D
+Edge: B - E
+Edge: C - F
+Edge: F - G
+Total Cost = 14.0
+*/
+```
+
 ![MST4a](docs/MST4a.png)
 
 ![MST4b](docs/MST4b.png)

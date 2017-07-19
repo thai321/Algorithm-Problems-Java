@@ -1,0 +1,40 @@
+graph G1 {
+  ratio=0.7;
+  ranksep=0.2;
+  rankdir = LR;
+
+  /*{rank = same;  A F}*/
+  /*{rank = same; C G}*/
+  /*{rank = same; B }*/
+  /*{rank = same; D E }*/
+
+  subgraph {
+      A -- C [label = 2, color = green]
+      A -- D [label = 12 color = blue, style = invis]
+      A -- B [label = 1 color = green]
+      B -- D [label = 4 color = blue, style = invis]
+      B -- E [label = 7, color = blue, style = invis]
+      B -- G [label = 8, color = blue, style = invis]
+      C -- F [label = 3 color = green]
+      C -- D [label = 6 color = blue, style = invis]
+      D -- F [label = 5 color = blue, style = invis]
+      D -- E [label = 2 color = green]
+      E -- F [label = 4 color = green]
+      E -- G [label = 9 color = blue, style = invis]
+      F -- G [label = 2 color = green]
+
+      /*C, D [xlabel = "(0)"]
+      B [xlabel = "(1)"]
+      A [xlabel = "(2)"]*/
+
+      E, D, F, G, C, A, B [fillcolor=green, style=filled];
+      /*B [fillcolor=orange, style=filled];*/
+
+    }
+
+    node [shape=plaintext]
+  	label = "  Heap content: Empty
+    --> We have managed to include all the vertices in the MST
+    So the algorithm terminates --> Overall Cost = 14
+    "
+}

@@ -31,7 +31,7 @@ public class PrimLazy {
       Edge minEdge = this.edgeHeap.remove();
 
       this.spanningTree.add(minEdge);
-      this.fullCost += minEdge.getWeigth();
+      this.fullCost += minEdge.getWeight();
 
       // visiting this vertex's neighbours in the next iteration
       vertex = minEdge.getTargetVertex(); // for next iteration
@@ -43,7 +43,7 @@ public class PrimLazy {
     System.out.println("The minimum spanningTree cost = " + this.fullCost);
 
     for(Edge edge : spanningTree)
-      System.out.print(edge.getStartVertex() + "  " + edge.getTargetVertex() + " - " + edge.getWeigth() + ", ");
+      System.out.print(edge.getStartVertex() + "  " + edge.getTargetVertex() + " - " + edge.getWeight() + ", ");
   }
 
 
