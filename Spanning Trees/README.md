@@ -1020,3 +1020,38 @@ Total Cost = 14.0
 ![MST4a](docs/MST4a.png)
 
 ![MST4b](docs/MST4b.png)
+
+
+## Applications of spanning trees
+
+#### Optimizing road/cable/pipe length
+- We have N cities
+- We want to make sure that every city can be reached of roads
+- So the naive approach is to connect every city with every other city
+- Not the optimal solution
+- We have to find the minimum spanning tree: in order to connect all of the cities with the lowest cost possible (so the minimum length of roads)
+- Same problems -> want to lead in internet to a region or electricity or building motorways
+
+#### K-Means Clustering
+- We want to classify similar items
+- For example dots in the 2 dimensional plane
+- **Euclidean distance between 2 nodes**
+- **The dots that are closer to each other than to any other dots -> will be in the same cluster**
+- We construct a minimum spanning tree -> and remove the N-1 most expensive edges if we want to make N clusters
+- Ex: if we want to construct 3 clusters, we want to remove the most 2 expensive cluster --> N clusters, remove N-1 expensive clusters
+
+
+![MST6a](docs/MST6a.png)
+
+![MST6b](docs/MST6b.png)
+
+![MST6c](docs/MST6c.png)
+
+![MST6d](docs/MST6d.png)
+
+
+#### Routing in LAN
+- The **spanning tree protocal (STP)** ensures a loop-free topology for any bridged Ethernet local area network
+- Each switch would infinitely duplicate the first broadcast -> becuase there's nothing prevent loops
+- The idea behind a spanning tree topology is that bridges can discover a subset of the topology that is loop-free: that's the tree
+- **STP** also makes sure there is enough connectivity to reach every portion of the network by spanning the entire LAN

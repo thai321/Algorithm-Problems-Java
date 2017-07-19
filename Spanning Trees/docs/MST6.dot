@@ -1,0 +1,35 @@
+graph G1 {
+  /*ratio=1;*/
+  /*ranksep=;*/
+  rankdir = LR;
+
+
+
+  subgraph {
+      A -- B [label = 1 style = invis]
+      A -- C [label = 1 color = green]
+      B -- C [label = 1 color = green ]
+      C -- D [label = "8           " color = invis ]
+      D -- E [label = 1  color = green]
+
+
+
+
+      /*C, D [xlabel = "(0)"]
+      B [xlabel = "(1)"]
+      A [xlabel = "(2)"]*/
+
+      A,B,C,D,E [label = " "]
+
+      A, B, C [fillcolor=green, style=filled];
+      D, E [fillcolor=blue, style=filled];
+      /*G [fillcolor=orange, style=filled];*/
+
+    }
+
+    node [shape=plaintext]
+  	label = "Now we have 2 clusters
+    The vertices that are connected are in distinc clusters(Green, and Blue)
+    It is important in unsupervised data analysis
+    -> We want to find distinct segments in the market for example // Cluster analysis"
+}
