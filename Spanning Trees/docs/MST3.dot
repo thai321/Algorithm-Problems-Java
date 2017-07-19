@@ -1,0 +1,43 @@
+graph G1 {
+  ratio=0.8;
+  ranksep=1;
+  rankdir = LR;
+
+  {rank = same;  A F}
+  {rank = same; C G}
+  {rank = same; B }
+  {rank = same; D E }
+
+  subgraph {
+      A -- B [label = 2 color = green]
+      A -- C [label = 6 color = red, style = invis]
+      A -- F [label = 10 color = red, style = invis]
+      A -- E [label = 5, color = red, style = invis]
+      B -- E [label = 3 color = green]
+      B -- D [label = 3, color = green]
+      C -- D [label = 1 color = green]
+      C -- F [label = 2, color = green]
+      E -- D [label = 4 color = red, style = invis]
+      F -- G [label = 3, color = green]
+      G -- D [label = 5, color = red, style = invis]
+
+      /*C, D [xlabel = "(0)"]
+      B [xlabel = "(1)"]
+      A [xlabel = "(2)"]*/
+
+      D,C,F,B,A,E, G [fillcolor=green, style=filled];
+      /*G [fillcolor=orange, style=filled];*/
+
+    }
+
+    node [shape=plaintext]
+  	label = "
+      We have visited all the nodes, so we are done!
+      the minimum cost: 14
+      The minimum spanningTree cost = 14.0
+
+      OutPut:
+      D  C - 1.0, C  F - 2.0, D  B - 3.0,
+      B  A - 2.0, B  E - 3.0, F  G - 3.0
+    "
+}
