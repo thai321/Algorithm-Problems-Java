@@ -47,6 +47,7 @@ public class TarjanAlgorithm {
       }
     }
 
+    // only for the root SCC node
     if(isComponentRoot) {
       count++;
 
@@ -59,6 +60,7 @@ public class TarjanAlgorithm {
         component.add(actualVertex);
         actualVertex.setLowLink(Integer.MAX_VALUE);
 
+        // Run util it hits the root SCC node
         if(actualVertex.getName().equals(vertex.getName()))
           break;
       }

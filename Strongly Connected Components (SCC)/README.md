@@ -517,6 +517,7 @@ public class TarjanAlgorithm {
       }
     }
 
+    // only for the root SCC node
     if(isComponentRoot) {
       count++;
 
@@ -529,6 +530,7 @@ public class TarjanAlgorithm {
         component.add(actualVertex);
         actualVertex.setLowLink(Integer.MAX_VALUE);
 
+        // Run util it hits the root SCC node
         if(actualVertex.getName().equals(vertex.getName()))
           break;
       }
@@ -623,3 +625,12 @@ So vertex 6 is in SCC 3
 ```
 
 ![SCC6a](docs/SCC6a.png)
+
+
+-----
+
+## Applications
+- **Ecology**: to determine the hierarchy of food need
+- **Software enginnerring**: if we have a huge software and want to create packages to each connected classes we can classify according to strongly connected components
+- **Astrophysics**: if we have an image of faint stars and want to detect each of them... it is a good way of finding the clusters
+- **Recommender systems (youtube videos)**: we can recommend another item from the given strongly connected cluster !!!
