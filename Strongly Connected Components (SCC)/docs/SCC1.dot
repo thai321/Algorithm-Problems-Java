@@ -1,0 +1,56 @@
+digraph G {
+
+
+ratio=0.5;
+ranksep=0.8;
+rankdir=TB;
+{ rank=same; A C E G }
+{ rank=same; B D F H }
+
+/*splines=false;*/
+/*edge[weight=1]*/
+  A -> C [label = "        ",  dir = back, color = orange ]
+  C -> E [label = "        " dir = back color = blue ]
+  C -> D [ dir = back color = green ]
+  C -> B [ dir = back color = orange]
+  E -> G [label = "        " dir = back color = blue  ]
+  E -> F [dir = back color = green ]
+  G -> E [label = "        ", dir = back color = blue]
+  G -> H [dir = back color = blue ]
+  H -> G [dir = back color = blue ]
+  F -> H [label = "        " color = green ]
+
+  B -> A [dir = back color = orange]
+  B -> D [label = "        " dir = back color = green  ]
+  D -> F [label = "        " dir = back color = green  ]
+  F -> D [label = "        ", dir = back color = green ]
+  /*H -> F*/
+
+
+  /*A [label = " 1 C B"]
+  C [label = " E G 8"]
+  3 [label = " D 7"]
+
+  1 -> C -> 3
+  1 -> 3*/
+
+  C [label = B]
+  E [label = C]
+  G [label = D]
+  B [label = E]
+  D [label = F]
+  F [label = G]
+
+
+
+
+  A, B, C [fillcolor=orange, style=filled];
+  E, G, H [fillcolor=blue, style=filled];
+  F, D [fillcolor=green, style=filled];
+  /*D, F, H, G, E, B, C, A [fillcolor=blue, style=filled];*/
+  /*2 [fillcolor=orange, style=filled];*/
+
+  node [shape=plaintext]
+  label = ""
+
+}
