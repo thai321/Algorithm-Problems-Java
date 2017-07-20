@@ -1,0 +1,37 @@
+digraph G {
+
+
+  ratio = 0.6;
+  /*ranksep;*/
+  rankdir=TB;
+  {rank=same; 1 2 3 4}
+  {rank=same; 5 6 7}
+
+  1 -> 5
+  1 -> 2 [dir=back label = "        "]
+  5 -> 2
+  5 -> 6 [dir=back label = "        "]
+  2 -> 3 [dir=back label = "        "]
+  3 -> 4 -> 3 [label = "        "]
+  6 -> 2
+  6 -> 7 -> 6 [label = "        "]
+  7 -> 3
+
+
+
+  1,2,5 [fillcolor=orange, style=filled];
+  3,4 [fillcolor=green, style=filled];
+  6 ,7 [fillcolor=purple, style=filled];
+  /*D, F, H, G, E, B, C, A [fillcolor=blue, style=filled];*/
+  /*2 [fillcolor=orange, style=filled];*/
+
+  node [shape=plaintext]
+  label = "And we still have 7 on the Stack
+  --> 7 is a part of a SCC (SCC#3)
+  --> 7 can't go to 3, since there belong to a SCC
+  --> 7 go to 6
+  6 can't go to 2, 5, since 2, and 5 belong to a SCC
+  --> SCC#3: 6 and 7
+  "
+
+}

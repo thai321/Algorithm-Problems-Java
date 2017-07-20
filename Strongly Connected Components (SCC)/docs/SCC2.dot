@@ -1,0 +1,26 @@
+digraph G {
+
+
+/*ratio=0.5;
+ranksep=0.8;*/
+rankdir=TB;
+{ rank=same; A  }
+{ rank=same; B C  }
+{ rank=same; D F  }
+{ rank=same; G  }
+
+  A -> B
+  A -> C
+  B -> D
+  B -> F
+  D -> G
+
+
+  node [shape=plaintext]
+  label = "
+B - G: Forward Edge
+   D - F: Cross Edge
+     F - A: Backward Edge
+  "
+
+}
