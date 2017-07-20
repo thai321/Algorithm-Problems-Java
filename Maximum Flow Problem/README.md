@@ -80,3 +80,130 @@
 - So **the maximum flow and the minimum cut has something to do with each other**
 - Precisely -> the value of the maximum flow passing from source **s** to sink **t** is equal to the value of the minimum cut (so the total weight of edges in the minimum cut)
 - Another important fact: the minimum cut is the smallest total weight of the edges which if removed would disconnect he source from the sink
+
+### <u>Residual network</u>
+
+- ![MF4](docs/MF4.png)
+
+- ![MF4b](docs/MF4b.png)
+
+- ![MF4c](docs/MF4c.png)
+
+- ![MF4d](docs/MF4d.png)
+
+- ![MF4e](docs/MF4e.png)
+
+- ![MF4f](docs/MF4f.png)
+------
+
+- Send 4 from B to A, --> no more flow left
+
+- ![MF4g](docs/MF4g.png)
+
+- ... Same thing
+
+- ![MF4h](docs/MF4h.png)
+
+-------
+
+## Ford-Fulkerson algorithm
+
+- <u>Augmenting path</u>: it only exists in the residual **G'(V,E)** network
+  - It is a simple path from **s** to **t** in the residual network
+
+  - **If there is an augmenting path in **G'** we know for certain that the flow in **G** is not maximal**
+  - **If there is no more augmentingpaths in **G'**, it means we can terminate the algorithm**
+
+#### Steps:
+1. Initialize the flow in the flow network to be zero at the beginning
+    - **f(u,v) <-- 0 for all u,v in V**
+2. While there is a path from **s** to **t** in **G'** residual network
+    - Find that given augmenting path **p**
+    - Do augment **f** flow along path **p** in the **G** flow network
+
+-----
+
+## Edmonds-Karp algorithm
+- We know from Ford-Fulkerson algorithm that we have to find the augmentingn paths in the residual network
+- There are several graph traversal algorithms to traverse a graph
+- Edmons-Karp algorithm -> uses **BFS** (breadth-first search) to find these augmenting paths
+- **Running time of Edmonds-Karp:** **O(V E^2)**
+- **Running time of Dubuc algorithm:** **O(V^2 E)** <-- better if **E > V**
+
+#### Steps:
+
+- **Initilize every flow to be 0**
+- At the begining, the **residual G' is the same as Original G(V,E) graph**
+
+![MF5a](docs/MF5a.png)
+
+-----
+
+![MF5b](docs/MF5b.png)
+
+![MF5c](docs/MF5c.png)
+
+![MF5d](docs/MF5d.png)
+
+![MF5e](docs/MF5e.png)
+
+![MF5f](docs/MF5f.png)
+
+![MF5g](docs/MF5g.png)
+
+-----
+- We have to find the **Shortest augmenting path**
+-  S -> B -> A -> T with cost 11
+![MF5h](docs/MF5h.png)
+
+---
+
+![MF5i](docs/MF5i.png)
+
+-----
+- Add flow 3 to graph G:
+  - S -- B = 1 + 3 = 4
+  - B -- A = 0 + 3 = 3
+  - A -- T = 4 + 3 = 7
+
+![MF5j](docs/MF5j.png)
+
+--------
+- **Let's Construct the Residual G' network again**
+- **Then, as you can see, we have 2 back edges comming out to T**
+  - **--> Can't get from S to T**
+  - **---> NO MORE AUGMENTING PATH !!!**
+  - **---> This is the end of the Algorithm**
+
+![MF5k](docs/MF5k.png)
+
+------
+- What is the maximum flow? 4 + 4 = 8 (outgoing and comming)
+
+![MF5l](docs/MF5l.png)
+
+
+------
+- What is the minimum cut? Basically equal to the maximum flow
+
+![MF5m](docs/MF5m.png)
+
+-----
+- We consider edge S -- A(4/4), but it's full (4/4)
+- We consider edge S -- B (4/5)
+- --> visit B
+- We consider edge B -- T (1/1), but it's full (1/1)
+- We consider edge B -- A (3/4)
+- --> visit A
+- We consider edge A -- T (7/7), but it's full (7/7)
+
+![MF5n](docs/MF5n.png)
+
+-------
+
+- Therefore, we have 2 two (Yellow and green)
+- The minimum cut is the flow from Yellow set to Green set
+- In this case flow from A to T (7) and B to T (1)
+- **Minimum cut: 7+1 = 8**
+
+![MF5o](docs/MF5o.png)
