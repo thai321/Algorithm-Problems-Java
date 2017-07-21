@@ -421,41 +421,46 @@ public class FordFulkerson {
 
   public static void main(String[] args) {
 
-  	FlowNetwork flowNetwork = new FlowNetwork(4);
+    FlowNetwork flowNetwork = new FlowNetwork(4);
 
-  	Vertex vertex0 = new Vertex(0, "s");
-  	Vertex vertex1 = new Vertex(1, "A");
-  	Vertex vertex2 = new Vertex(2, "B");
-  	Vertex vertex3 = new Vertex(3, "t");
+    Vertex vertex0 = new Vertex(0, "s");
+    Vertex vertex1 = new Vertex(1, "A");
+    Vertex vertex2 = new Vertex(2, "B");
+    Vertex vertex3 = new Vertex(3, "t");
 
-  	List<Vertex> vertexList = new ArrayList<>();
-  	vertexList.add(vertex0);
-  	vertexList.add(vertex1);
-  	vertexList.add(vertex2);
-  	vertexList.add(vertex3);
+    List<Vertex> vertexList = new ArrayList<>();
+    vertexList.add(vertex0);
+    vertexList.add(vertex1);
+    vertexList.add(vertex2);
+    vertexList.add(vertex3);
 
-  	flowNetwork.addEdge(new Edge(vertex0, vertex1, 4));
-  	flowNetwork.addEdge(new Edge(vertex0, vertex2, 5));
+    flowNetwork.addEdge(new Edge(vertex0, vertex1, 4));
+    flowNetwork.addEdge(new Edge(vertex0, vertex2, 5));
 
-  	flowNetwork.addEdge(new Edge(vertex1, vertex3, 7));
+    flowNetwork.addEdge(new Edge(vertex1, vertex3, 7));
 
-  	flowNetwork.addEdge(new Edge(vertex2, vertex1, 4));
-  	flowNetwork.addEdge(new Edge(vertex2, vertex3, 1));
+    flowNetwork.addEdge(new Edge(vertex2, vertex1, 4));
+    flowNetwork.addEdge(new Edge(vertex2, vertex3, 1));
 
-  	FordFulkerson fordFulkerson = new FordFulkerson(flowNetwork, vertex0, vertex3);
+    FordFulkerson fordFulkerson = new FordFulkerson(flowNetwork, vertex0, vertex3);
 
-  	System.out.println("Maximum flow is: " + fordFulkerson.getMaxFlow());
+    System.out.println("Maximum flow is: " + fordFulkerson.getMaxFlow());
 
-  	// print min-cut
-  	System.out.println("Vertices in the min cut set: ");
-  	for (int v = 0; v < vertexList.size(); v++) {
-  		if (fordFulkerson.isInCut(v))
-  			System.out.print(vertexList.get(v)+" - ");
-  		;
-  	}
+    // print min-cut
+    System.out.println("Vertices in the min cut set: ");
+    for (int v = 0; v < vertexList.size(); v++) {
+    	if (fordFulkerson.isInCut(v))
+    		System.out.print(vertexList.get(v)+" - ");
+    	;
+    }
   }
 
 }
+/*
+Maximum flow is: 8.0
+Vertices in the min cut set:
+0 s - 1 A - 2 B -
+*/
 ```
 
 ![MF6a](docs/MF6a.png)
@@ -463,3 +468,96 @@ public class FordFulkerson {
 ![MF6b](docs/MF6b.png)
 
 ![MF6c](docs/MF6c.png)
+
+
+---------
+
+## Biparatite Matching
+- There is a lot of applications of maximum flow
+- In graph theory, a bipartite graph is a graph whose vertices can be divided into two disjoint sets **U** and **V** such that every edge connects a vertex in **U** to one in **V**
+
+![MF7a](docs/MF7a.png)
+
+------
+- Suppose we have a set of people **P** and a set of jobs **J**
+- Each person can do only some of the jobs
+- We can model it as a bipartite graph
+- Matching: gives an assignment of people to tasks
+- Maximum matching: contains as many edges as possible
+- Find an assignment of jobs to applicants in such that as many applicants get jobs as possible
+
+![MF7b](docs/MF7b.png)
+
+![MF7c](docs/MF7c.png)
+
+![MF7d](docs/MF7d.png)
+
+------
+
+- We just have to find the maximum flow in the constructed network
+- The maximum flow = the maximum matching!!!
+- In this case, the maximum flow is **3**
+  - Means maximum matching is **3**
+  - Means 3 of them get job
+
+![MF7b](docs/MF7b.png)
+
+```java
+public static void main(String[] args) {
+
+  int N = 5;
+  double inf = Double.POSITIVE_INFINITY;
+
+  FlowNetwork flowNetwork = new FlowNetwork(2*N+2);
+
+  List<Vertex> vertexList = new ArrayList<>();
+
+  vertexList.add(new Vertex(0, "s"));
+
+  vertexList.add(new Vertex(1, "A"));
+  vertexList.add(new Vertex(2, "B"));
+  vertexList.add(new Vertex(3, "C"));
+  vertexList.add(new Vertex(4, "D"));
+  vertexList.add(new Vertex(5, "E"));
+
+  vertexList.add(new Vertex(6, "1"));
+  vertexList.add(new Vertex(7, "2"));
+  vertexList.add(new Vertex(8, "3"));
+  vertexList.add(new Vertex(9, "4"));
+  vertexList.add(new Vertex(10, "5"));
+
+  vertexList.add(new Vertex(11, "t"));
+
+  for(int i=0;i<N;i++){
+    flowNetwork.addEdge(new Edge(vertexList.get(0), vertexList.get(i+1), 1));
+    flowNetwork.addEdge(new Edge(vertexList.get(i+1+N),vertexList.get(11), 1));
+  }
+
+  flowNetwork.addEdge(new Edge(vertexList.get(1), vertexList.get(6), inf));
+  flowNetwork.addEdge(new Edge(vertexList.get(2), vertexList.get(6), inf));
+
+  flowNetwork.addEdge(new Edge(vertexList.get(1), vertexList.get(7), inf));
+  flowNetwork.addEdge(new Edge(vertexList.get(3), vertexList.get(7), inf));
+
+  flowNetwork.addEdge(new Edge(vertexList.get(3), vertexList.get(8), inf));
+  flowNetwork.addEdge(new Edge(vertexList.get(5), vertexList.get(8), inf));
+
+  flowNetwork.addEdge(new Edge(vertexList.get(1), vertexList.get(9), inf));
+  flowNetwork.addEdge(new Edge(vertexList.get(4), vertexList.get(9), inf));
+
+  flowNetwork.addEdge(new Edge(vertexList.get(4), vertexList.get(10), inf));
+
+  EdmondsKarpAlgorithm edmondsKarpAlgorithm = new EdmondsKarpAlgorithm(flowNetwork, vertexList.get(0),vertexList.get(11));
+  System.out.println("Maximum number of pairs: "+edmondsKarpAlgorithm.getMaxFlow());
+
+  for (int v = 0; v < N; v++) {
+    for (Edge e : flowNetwork.getAdjacencies(vertexList.get(v+1))) {
+      if (e.getFromVertex().equals(v) && e.getFlow() > 0)
+         System.out.println(e.getFromVertex() + "-" + e.getTargetVertex());
+    }
+  }
+}
+/*
+Maximum number of pairs: 5 --> all 5 applicants can have job
+*/
+```
