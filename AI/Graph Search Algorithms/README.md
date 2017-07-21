@@ -116,3 +116,166 @@ Node has been found ....
 - Manhattan distance: we usually use this kind of heuristic
   - Keep tracking what is the distance between us and the goal
   - NOT the Euclidean distance!!!
+
+-------
+
+
+```java
+public class Edge {
+
+  private double cost;
+  private Node targetNode;
+
+  public Edge(Node targetNode, double cost) {
+    this.cost = cost;
+    this.targetNode = targetNode;
+  }
+
+  public double getCost() { return cost; }
+  public void setCost(double cost) { this.cost = cost; }
+
+  public Node getTargetNode() { return targetNode; }
+  public void setTargetNode(Node targetNode) { this.targetNode = targetNode; }
+}
+
+```
+
+```java
+public class Node implements Comparable<Node>{
+
+  private String value;
+  private List<Edge> adjacenciesList;
+  private Node parentNode;
+
+  // G(n) is exact cost of the path from the starting point to any vertex n
+  // h(n) represents the heuristic estimated cost from vertex n to the goal
+  private double gScore; // g is guess, and h is heuristic
+  private double fScore; // f = g + h , h = f - g
+  private int x;
+  private int y;
+
+
+
+  public Node(String value) {
+    this.value = value;
+    this.adjacenciesList = new ArrayList<Edge>();
+  }
+
+  public void addNeighbour(Edge edge) { this.adjacenciesList.add(edge); }
+
+  public String getValue() { return value; }
+  public void setValue(String value) { this.value = value; }
+
+  public double getFScore() { return fScore; }
+  public void setFScore(double fScore) { this.fScore = fScore; }
+
+  public double getGScore() { return gScore; }
+  public void setGScore(double gScore) { this.gScore = gScore; }
+
+  public Node getParentNode() { return parentNode; }
+  public void setParentNode(Node parentNode) { this.parentNode = parentNode; }
+
+  public int getX() { return x; }
+  public void setX(int x) { this.x = x; }
+
+  public int getY() { return y; }
+  public void setY(int y) { this.y = y; }
+
+  public List<Edge> getAdjacenciesList() { return adjacenciesList; }
+
+  @Override
+  public String toString() { return this.value; }
+
+  @Override
+  public int compareTo(Node otherNode) {
+    return Double.compare(this.fScore, otherNode.getFScore());
+  }
+}
+```
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+import java.util.PriorityQueue;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Collections;
+
+// kinda like Dijkstra
+public class AStarSearch {
+
+  public void AStarSearch(Node sourceNode, Node goalNode) {
+
+    Set<Node> exploredNodes = new HashSet<>();
+
+    PriorityQueue<Node> unExploredNodesQueue = new PriorityQueue<>();
+    sourceNode.setGScore(0); // initilize G-Score to be 0
+    unExploredNodesQueue.add(sourceNode);
+    boolean isFound = false;
+
+    while(!unExploredNodesQueue.isEmpty() && !isFound) {
+
+      Node currentNode = unExploredNodesQueue.poll();
+      exploredNodes.add(currentNode);
+
+      if(currentNode.getValue().equals(goalNode.getValue()))
+        isFound = true;
+
+      for(Edge e : currentNode.getAdjacenciesList()) {
+        Node childNode = e.getTargetNode();
+        double cost = e.getCost();
+        double tempGScore = currentNode.getFScore() + cost;
+        double tempFScore = tempGScore + heuristic(childNode, goalNode);
+
+        // not better --> continue
+        if(exploredNodes.contains(childNode) && (tempFScore >= childNode.getFScore())) {
+          continue;
+        } // better solution
+        else if(!unExploredNodesQueue.contains(childNode) || (tempFScore < childNode.getFScore())) {
+          childNode.setParentNode(currentNode);
+          childNode.setGScore(tempGScore);
+          childNode.setFScore(tempFScore);
+
+          if(unExploredNodesQueue.contains(childNode))
+            unExploredNodesQueue.remove(childNode);
+
+          unExploredNodesQueue.add(childNode);
+        }
+      }
+    }
+  }
+  // Manhattan distance
+  private double heuristic(Node node1, Node node2) {
+    return Math.abs(node1.getX() - node2.getX()) + Math.abs(node2.getY() - node1.getY());
+  }
+
+  public List<Node> getPath(Node targetNode) {
+    List<Node> pathList = new ArrayList<>();
+
+    for(Node node = targetNode; node != null; node = node.getParentNode())
+      pathList.add(node);
+
+    Collections.reverse(pathList);
+    return pathList;
+  }
+
+  public static void main(String[] args) {
+    Node node1 = new Node("A");
+    Node node2 = new Node("B");
+    Node node3 = new Node("C");
+    Node node4 = new Node("D");
+
+    node1.addNeighbour(new Edge(node2, 10));
+    node1.addNeighbour(new Edge(node4, 100));
+    node2.addNeighbour(new Edge(node3, 10));
+    node3.addNeighbour(new Edge(node4, 10));
+
+    AStarSearch aStar = new AStarSearch();
+    aStar.AStarSearch(node1, node4);
+
+    List<Node> path = aStar.getPath(node4);
+    System.out.println(path);
+  }
+}
+```
+![AStart1a](docs/AStart1a.png)     ![AStart1b](docs/AStart1b.png)

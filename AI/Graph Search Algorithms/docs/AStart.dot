@@ -1,0 +1,10 @@
+digraph G {
+  A -> B [label = 10]
+  A -> D [label = 100]
+  B -> C [label = 10]
+  C -> D [label = 10]
+  node [shape=plaintext]
+	label = "
+  [A, B, C, D]
+	"
+}
