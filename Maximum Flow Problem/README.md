@@ -207,3 +207,259 @@
 - **Minimum cut: 7+1 = 8**
 
 ![MF5o](docs/MF5o.png)
+
+
+------
+
+## Applications
+- A commumnications network has a set of requests to transmit messages between servers that are connected by channels (abstract wires)
+- They are capable of trnaferring information at varying rates
+- What is the maximum rate at which information can be transferred between two specified servers in the network?
+- If they are costs associated with the channels, what is the cheapest way to send the information at a given rate that is less than the maximum?
+
+----
+
+- Suppose that we have **N students** each needing jobs
+- There are **N companies** each needing to hire a student
+- These two lists (one sorted by student, the other sorted by company) give a list of job offers, which indicate mutual interest in matching students and jobs
+- Is there some way to match students to jobs so that every jobs is filled and every student gets a job?
+- If not, what is the maximum number of jobs that can be filled?
+
+-----
+
+- A city government needs to formulate a plan for evacuating people from the city in an emergency
+- What is the minimum amount of time that it would take to evacuate the city, if we suppose that we can control traffic flow so as to realize the minimum?
+- Traffic planners also might formulate questions like this when deciding which new roads, bridges, or tunnels might alleviate in rush-hours
+
+----
+
+- Given roads connecting an army's supply depot from troops at the bottom
+- Make bombing plan that would separate troops from supplies
+- The enemy's goal is to minimize the cost of bombing (perhaps assuming that the cost of cutting an ege is proportional to its width)
+- The army's goal is to design its road network to maximize the enemy's minimum cost
+
+-------
+
+### Implementation
+
+```java
+public class Vertex {
+
+  private int id;
+  private String name;
+  private boolean visited;
+
+  public Vertex(int id, String name) {
+    this.id = id;
+    this.name = name;
+  }
+
+  public int getId(){ return id; }
+  public void setId(int id) { this.id = id; }
+
+  public String getName(){ return name; }
+  public void setName(String name) { this.name = name; }
+
+  public boolean getVisited(){ return visited; }
+  public void setVisited(boolean visited) { this.visited = visited; }
+
+  public String toString() {
+    return this.id + " " + this.name;
+  }
+}
+```
+
+```java
+public class Edge {
+
+  private Vertex fromVertex;
+  private Vertex targetVertex;
+  private final double capacity;
+  private double flow;
+
+  public Edge(Vertex fromVertex, Vertex targetVertex, double capacity) {
+    this.fromVertex = fromVertex;
+    this.targetVertex = targetVertex;
+    this.capacity = capacity;
+    this.flow = 0.0;
+  }
+
+  public Edge(Edge edge) {
+    this.fromVertex = edge.getFromVertex();
+    this.targetVertex = edge.getTargetVertex();
+    this.capacity = edge.getCapacity();
+    this.flow = edge.getFlow();
+  }
+
+  public Vertex getOther(Vertex vertex) {
+    return (vertex == fromVertex) ? targetVertex : fromVertex;
+  }
+
+  public double getResidualCapacity(Vertex vertex) {
+    return (vertex == fromVertex) ? flow : (capacity - flow);
+  }        // Backward edge                 // forward edge
+
+  public void addResidualFlowto(Vertex vertex, double deltaFlow) {
+    flow = (vertex == fromVertex) ? (flow - deltaFlow) : (flow + deltaFlow);
+  }         // backward edge                              // forward edge
+
+  public double getFlow() { return flow; }
+  public void setFlow(double flow) { this.flow = flow; }
+
+  public double getCapacity() { return capacity; }
+
+  public Vertex getFromVertex() { return fromVertex; }
+  public void setFromVertex(Vertex fromVertex) { this.fromVertex = fromVertex; }
+
+  public Vertex getTargetVertex() { return targetVertex; }
+  public void setTargetVertex(Vertex targetVertex) { this.targetVertex = targetVertex; }
+
+  @Override
+  public String toString() { return fromVertex + "-" + targetVertex + " " + flow + "/" + capacity; }
+}
+```
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class FlowNetwork {
+
+  private int numOfVertices;
+  private int numOfEdges;
+  private List<List<Edge>> adjacenciesList;
+
+  public FlowNetwork(int numOfVertices) {
+    this.numOfVertices = numOfVertices;
+    this.numOfEdges = 0;
+    this.adjacenciesList = new ArrayList<>();
+
+    for(int i = 0; i < numOfVertices; i++) {
+      List<Edge> edgeList = new ArrayList<>();
+      adjacenciesList.add(edgeList);
+    }
+  }
+
+  public int getNumOfVertices() { return numOfVertices; }
+  public int getNumOfEdges() { return numOfEdges; }
+
+  public void addEdge(Edge e) {
+    Vertex v = e.getFromVertex();
+    Vertex w = e.getTargetVertex();
+    adjacenciesList.get(v.getId()).add(e);
+    adjacenciesList.get(w.getId()).add(e);
+    numOfEdges++;
+  }
+
+  public List<Edge> getAdjacenciesList(Vertex v) { return adjacenciesList.get(v.getId()); }
+
+}
+```
+
+```java
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.ArrayList;
+import java.util.List;
+
+public class FordFulkerson {
+
+  // marked[v.getId()] = true s --> v in the residual graph
+  private boolean[] marked;
+  private Edge[] edgeTo; // edgeTo[v] = edges in the augmenting path
+  private double valueMaxFlow;
+
+  public FordFulkerson(FlowNetwork flowNetwork, Vertex s, Vertex t) {
+
+    while(hasAugmentingPath(flowNetwork, s, t)) {
+      double minValue = Double.POSITIVE_INFINITY;
+
+      for(Vertex v = t; v != s; v = edgeTo[v.getId()].getOther(v)) {
+        minValue = Math.min(minValue, edgeTo[v.getId()].getResidualCapacity(v) );
+      }
+
+      for(Vertex v = t; v != s; v = edgeTo[v.getId()].getOther(v)) {
+        edgeTo[v.getId()].addResidualFlowto(v, minValue);
+      }
+
+      valueMaxFlow = valueMaxFlow + minValue;
+    }
+  }
+
+  public boolean isInCut(int index) { return marked[index]; }
+
+  public double getMaxFlow() { return this.valueMaxFlow; }
+
+  // BFS
+  private boolean hasAugmentingPath(FlowNetwork flowNetwork, Vertex s, Vertex t) {
+    edgeTo = new Edge[flowNetwork.getNumOfVertices()];
+    marked = new boolean[flowNetwork.getNumOfVertices()];
+
+    Queue<Vertex> queue = new LinkedList<>();
+    queue.add(s);
+    marked[s.getId()] = true;
+
+    while(!queue.isEmpty() && !marked[t.getId()]) {
+      Vertex v = queue.remove();
+
+      for(Edge e : flowNetwork.getAdjacenciesList(v)) {
+        Vertex w = e.getOther(v);
+
+        if(e.getResidualCapacity(w) > 0) {
+          if(!marked[w.getId()]) {
+            edgeTo[w.getId()] = e;
+            marked[w.getId()] = true;
+            queue.add(w);
+          }
+        }
+      }
+    }
+
+    // true means there is an augmenting path from s to t
+    return marked[t.getId()];
+  }
+
+  public static void main(String[] args) {
+
+  	FlowNetwork flowNetwork = new FlowNetwork(4);
+
+  	Vertex vertex0 = new Vertex(0, "s");
+  	Vertex vertex1 = new Vertex(1, "A");
+  	Vertex vertex2 = new Vertex(2, "B");
+  	Vertex vertex3 = new Vertex(3, "t");
+
+  	List<Vertex> vertexList = new ArrayList<>();
+  	vertexList.add(vertex0);
+  	vertexList.add(vertex1);
+  	vertexList.add(vertex2);
+  	vertexList.add(vertex3);
+
+  	flowNetwork.addEdge(new Edge(vertex0, vertex1, 4));
+  	flowNetwork.addEdge(new Edge(vertex0, vertex2, 5));
+
+  	flowNetwork.addEdge(new Edge(vertex1, vertex3, 7));
+
+  	flowNetwork.addEdge(new Edge(vertex2, vertex1, 4));
+  	flowNetwork.addEdge(new Edge(vertex2, vertex3, 1));
+
+  	FordFulkerson fordFulkerson = new FordFulkerson(flowNetwork, vertex0, vertex3);
+
+  	System.out.println("Maximum flow is: " + fordFulkerson.getMaxFlow());
+
+  	// print min-cut
+  	System.out.println("Vertices in the min cut set: ");
+  	for (int v = 0; v < vertexList.size(); v++) {
+  		if (fordFulkerson.isInCut(v))
+  			System.out.print(vertexList.get(v)+" - ");
+  		;
+  	}
+  }
+
+}
+```
+
+![MF6a](docs/MF6a.png)
+
+![MF6b](docs/MF6b.png)
+
+![MF6c](docs/MF6c.png)
