@@ -216,3 +216,396 @@
 - This is the optimal move!!!
 
 ![MA2p](docs/MA2p.png)
+
+
+
+---------
+
+## Tic Tac Toe Game
+
+![MA3a](docs/MA3a.png)
+
+------
+
+```java
+public class Constants {
+  private Constants() { }
+  public static final int BOARD_SIZE = 3;
+}
+```
+
+```java
+public class Cell {
+
+  private int x; // row: 0,1,2
+  private int y; // col: 0,1,2
+  private int minimaxValue;
+
+  public Cell(int x, int y) {
+    this.x = x;
+    this.y = y;
+  }
+
+  public void setX(int x) { this.x = x; }
+  public int getX() { return x; }
+
+  public void setY(int y) { this.y = y; }
+  public int getY() { return y; }
+
+  public void setMinimaxValue(int minimaxValue) { this.minimaxValue = minimaxValue; }
+  public int getMinimaxValue() { return minimaxValue; }
+
+  @Override
+  public String toString(){ return "(" + this.x + "," + this.y + ")"; }
+}
+```
+
+```java
+public enum Player {
+
+  COMPUTER("X"), USER("O"), NONE("-");
+
+  private Player(String text) {
+    this.text = text;
+  }
+
+  private final String text;
+
+  @Override
+  public String toString() { return this.text; }
+}
+```
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class Board {
+
+  private List<Cell> emptyCells;
+  private Scanner scanner;
+  private Player[][] board;
+  private List<Cell> rootValues;
+
+  public Board() {
+    initializeBoard();
+  }
+
+  private void initializeBoard() {
+    this.rootValues = new ArrayList<>();
+    this.scanner = new Scanner(System.in);
+    this.board = new Player[Constants.BOARD_SIZE][Constants.BOARD_SIZE];
+  }
+
+  public boolean isRunning() {
+
+    if(isWinning(Player.COMPUTER)) return false;
+    if(isWinning(Player.USER)) return false;
+    if(getEmptyCells().isEmpty()) return false;
+
+    return true;
+  }
+
+  public List<Cell> getEmptyCells() {
+    emptyCells = new ArrayList<>();
+
+    for(int i = 0; i < Constants.BOARD_SIZE; i++)
+      for(int j = 0; j < Constants.BOARD_SIZE; j++)
+        if(board[i][j] == Player.NONE)
+          emptyCells.add(new Cell(i,j));
+
+    return emptyCells;
+  }
+
+  public void move(Cell cell, Player player) {
+    this.board[cell.getX()][cell.getY()] = player;
+  }
+
+  public Cell getBestMove() {
+    int max = Integer.MIN_VALUE;
+    int best = Integer.MIN_VALUE;
+
+    for(int i = 0; i < rootValues.size(); i++) {
+      if(max < rootValues.get(i).getMinimaxValue()) {
+        max = rootValues.get(i).getMinimaxValue();
+        best = i;
+      }
+    }
+
+    return rootValues.get(best);
+  }
+
+  public void makeUserInput() {
+    System.out.println("User's move:");
+    int x = scanner.nextInt();
+    int y = scanner.nextInt();
+    Cell cell = new Cell(x,y);
+    move(cell, Player.USER);
+  }
+
+  public void displayBoard() {
+    System.out.println();
+
+    for(int i = 0; i <  Constants.BOARD_SIZE; i++) {
+      for(int j = 0; j < Constants.BOARD_SIZE; j++) {
+        System.out.print(board[i][j] + " ");
+      }
+      System.out.println();
+    }
+    System.out.println("#########################");
+  }
+
+  public int returnMin(List<Integer> list) {
+    int min = Integer.MAX_VALUE;
+    int index = Integer.MIN_VALUE;
+
+    for(int i = 0; i < list.size(); i++) {
+      if(list.get(i) < min) {
+        min = list.get(i);
+        index = i;
+      }
+    }
+
+    return list.get(index);
+  }
+
+  public int returnMax(List<Integer> list) {
+    int max = Integer.MIN_VALUE;
+    int index = Integer.MIN_VALUE;
+
+    for(int i = 0; i < list.size(); i++) {
+      if(list.get(i) > max) {
+        max = list.get(i);
+        index = i;
+      }
+    }
+
+    return list.get(index);
+  }
+
+  public void callMinimax(int depth, Player player) {
+    rootValues.clear();
+    minimax(depth, player);
+  }
+
+  public int minimax(int depth, Player player) {
+    if(isWinning(Player.COMPUTER)) return +1;
+    if(isWinning(Player.USER)) return -1;
+
+    List<Cell> availabelCells = getEmptyCells();
+
+    if(availabelCells.isEmpty()) return 0; //draw
+
+    List<Integer> scores = new ArrayList<>();
+
+    for(int i = 0; i < availabelCells.size(); i++) {
+      Cell point = availabelCells.get(i);
+
+      if(player == Player.COMPUTER) {
+        move(point, Player.COMPUTER);
+        int currentScore = minimax(depth + 1, Player.USER);
+        scores.add(currentScore);
+
+        // after it backtrack
+        // set the minimax value for each of empty cells at the current board state
+        if(depth == 0) {
+          point.setMinimaxValue(currentScore);
+          rootValues.add(point);
+        }
+      } else if(player == Player.USER) {
+          move(point, Player.USER);
+          scores.add(minimax(depth + 1, Player.COMPUTER));
+      }
+
+      board[point.getX()][point.getY()] = Player.NONE; // set it back to normal
+    }
+
+    if(player == Player.COMPUTER) {
+      return returnMax(scores);
+    }
+    return returnMin(scores);
+  }
+
+  public void setupBoard() {
+    for(int i = 0; i < Constants.BOARD_SIZE; i++)
+      for(int j = 0; j < Constants.BOARD_SIZE; j++)
+        board[i][j] = Player.NONE;
+  }
+
+
+  public boolean isWinning(Player player) {
+    // checking diagonal
+    if(board[0][0] == player && board[1][1] == player && board[2][2] == player)
+      return true;
+    // checking diagonal
+    if(board[0][0] == player && board[1][1] == player && board[2][2] == player)
+      return true;
+
+    for(int i = 0; i < Constants.BOARD_SIZE; i++) {
+      // Checking the row
+      if(board[i][0] == player && board[i][1] == player && board[i][2] == player)
+        return true;
+      // Checking the column
+      if(board[0][i] == player && board[1][i] == player && board[2][i] == player)
+        return true;
+    }
+    return false;
+  }
+
+  public Scanner getScanner() { return scanner; }
+  public List<Cell> getRootValues() { return rootValues; }
+
+}
+```
+
+```java
+import java.util.Random;
+
+public class Game {
+
+  private Board board;
+  private Random random;
+
+  public Game() {
+    initializeGame();
+    displayBoard();
+    makeFirstMove();
+    playGame();
+    checkStatus();
+  }
+
+  private void playGame() {
+    while(this.board.isRunning()) {
+      System.out.println("User move: ");
+      Cell userCell = new Cell(board.getScanner().nextInt(), board.getScanner().nextInt());
+
+      this.board.move(userCell, Player.USER);
+      displayBoard();
+
+      if(!this.board.isRunning())
+        break;
+
+      this.board.callMinimax(0, Player.COMPUTER);
+
+      for(Cell cell : this.board.getRootValues())
+        System.out.println("Cell value: " + cell + ", minimaxValue = " + cell.getMinimaxValue());
+
+      this.board.move(board.getBestMove(), Player.COMPUTER);
+      displayBoard();
+    }
+  }
+
+  private void makeFirstMove() {
+    System.out.println("Who starts? 1 - Computer ; 2 - User");
+    int choice = board.getScanner().nextInt();
+
+    if(choice == 1) {
+      int xRandom = random.nextInt(Constants.BOARD_SIZE);
+      int yRandom = random.nextInt(Constants.BOARD_SIZE);
+      Cell cell = new Cell(xRandom, yRandom);
+      this.board.move(cell, Player.COMPUTER);
+      displayBoard();
+    }
+  }
+
+  private void displayBoard() {
+    this.board.displayBoard();
+  }
+
+  private void checkStatus() {
+    if(board.isWinning(Player.COMPUTER)) {
+      System.out.println("Computer has won!");
+    } else if(board.isWinning(Player.USER)) {
+      System.out.println("User has won!");
+    } else
+      System.out.println("It's a draw!!!");
+  }
+
+  private void initializeGame() {
+    this.board = new Board();
+    this.board.setupBoard();
+    this.random = new Random();
+  }
+
+  public static void main(String[] args) {
+    new Game();
+  }
+}
+
+/*
+Optimize for the Computer Player, not Human Player
+
+- - -
+- - -
+- - -
+#########################
+Who starts? 1 - Computer ; 2 - User
+2
+User move:
+1
+1
+
+- - -
+- O -
+- - -
+#########################
+Cell value: (0,0), minimaxValue = 0
+Cell value: (0,1), minimaxValue = -1
+Cell value: (0,2), minimaxValue = 0
+Cell value: (1,0), minimaxValue = -1
+Cell value: (1,2), minimaxValue = -1
+Cell value: (2,0), minimaxValue = 0
+Cell value: (2,1), minimaxValue = -1
+Cell value: (2,2), minimaxValue = 0
+
+X - -
+- O -
+- - -
+#########################
+User move:
+1
+0
+
+X - -
+O O -
+- - -
+#########################
+Cell value: (0,1), minimaxValue = -1
+Cell value: (0,2), minimaxValue = -1
+Cell value: (1,2), minimaxValue = 0
+Cell value: (2,0), minimaxValue = -1
+Cell value: (2,1), minimaxValue = -1
+Cell value: (2,2), minimaxValue = -1
+
+X - -
+O O X
+- - -
+#########################
+User move:
+0 1
+
+X O -
+O O X
+- - -
+#########################
+Cell value: (0,2), minimaxValue = -1
+Cell value: (2,0), minimaxValue = -1
+Cell value: (2,1), minimaxValue = 0
+Cell value: (2,2), minimaxValue = -1
+
+X O -
+O O X
+- X -
+#########################
+User move:
+2
+1
+
+X O -
+O O X
+- O -
+#########################
+User has won!
+*/
+```
