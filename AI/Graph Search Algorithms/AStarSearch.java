@@ -79,7 +79,5 @@ public class AStarSearch {
 
     List<Node> path = aStar.getPath(node4);
     System.out.println(path);
-
   }
-
 }
