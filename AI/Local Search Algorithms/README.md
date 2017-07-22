@@ -127,3 +127,21 @@ x = 0.9900000000000023, y = 1.9999
 Local maximum is: 1.9999
 */
 ```
+
+-------
+
+## Tabu Search
+
+- Metaheuristic search method
+- Local search methods have a tendency to become stuck in suboptimal regions !!! ~ Hill climbing
+  1. worsening moves can be accpeted if no improving move is available (stuck at a local minimum/maximum)
+  2. Prohibitions ("tabu") are introduced to discourage the search from coming back to previously-visited solutions
+- Have to use a data structure to store the prohibited points. We have to check according to this data structure whether a move is allowed or not
+
+### Simulated annealing
+- Good algorithm to avoid local optimum instead of global optimum
+- Lots of applications: Traveling Sale man Problem (TSP), AI
+- We have a T parameter: "temperature"
+- As far as T is high we allow bad solutions too
+- As T is decreasing -> we are accepting good solutions more often
+- HELPS TO AVOID LOCAL OPTIMUM
