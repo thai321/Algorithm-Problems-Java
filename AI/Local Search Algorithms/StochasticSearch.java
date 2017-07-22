@@ -30,5 +30,5 @@ Maximum value y=f(x) is 1.9972853110624096
 Maximum value y=f(x) is 1.9998010181549513
 
 1000 iterations
-Maximum value y=f(x) is 1.9999991998781321
+Maximum value y=f(x) is 1.9999991998781321a
 */
