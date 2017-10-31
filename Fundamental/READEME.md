@@ -692,3 +692,157 @@ public class App {
 }
 
 ```
+
+-----
+
+## Merge Sort
+
+```java
+public class MergeSort {
+
+	public static void sort(int inputArray[]) {
+		sort(inputArray, 0, inputArray.length - 1);
+	}
+
+	public static void sort(int inputArray[], int start, int end) {
+		if(end <= start) {
+			return; // we're done traversing the array
+		}
+
+		int mid = (start + end)/ 2;
+		sort(inputArray, start, mid); // sort left half
+		sort(inputArray, mid + 1, end); // sort right half
+		merge(inputArray, start, mid, end); // merge sorted results into the inputArray
+	}
+
+	public static void merge(int inputArray[], int start, int mid, int end) {
+		int tempArray[] = new int [end - start + 1];
+
+		// index counter for the left side of the array
+		int leftSlot = start;
+
+		// index counter for the right side of the array
+		int rightSlot = mid + 1;
+
+		int k = 0;
+
+		while(leftSlot <= mid && rightSlot <= end) {
+			if(inputArray[leftSlot] < inputArray[rightSlot]) {
+				tempArray[k] = inputArray[leftSlot];
+				leftSlot++;
+			} else {
+				tempArray[k] = inputArray[rightSlot];
+				rightSlot++;
+			}
+			k++;
+		}
+
+		if(leftSlot <= mid) { // consider the right side done being sorted. Left must be sorted already
+			while(leftSlot <= mid) {
+				tempArray[k] = inputArray[leftSlot];
+				leftSlot++;
+				k++;
+			}
+		} else if(rightSlot <= end) {
+			while(rightSlot <= end) {
+				tempArray[k] = inputArray[rightSlot];
+				rightSlot++;
+				k++;
+			}
+		}
+
+		// copy over the temp array into the appropriate slots of the inputArray
+		for(int i = 0; i < tempArray.length; i++) {
+			inputArray[start + i] = tempArray[i];
+		}
+	}
+}
+
+
+public class App {
+
+	public static void main(String[] args) {
+		int[] inputArray = { 9, 7, 3, 1 , 6, 3, 2, 6, 8 , 9, 2, 3 , 0};
+		MergeSort sorter = new MergeSort();
+
+		sorter.sort(inputArray);
+
+		for(int i = 0; i < inputArray.length; i++) {
+			System.out.println(inputArray[i]);
+		}
+
+		/*
+		 	0
+			1
+			2
+			2
+			3
+			3
+			3
+			6
+			6
+			7
+			8
+			9
+			9
+		 */
+
+	}
+
+}
+```
+
+
+----
+
+
+## Quick Sort
+
+```java
+import java.util.Arrays;
+
+public class App {
+
+	public static void main(String[] args) {
+		int[] inputArray = {12, 81, 74, 43, 1098, 0, 8, 92, 17, 754, 912, 0, 6, 4};
+		quickSort(inputArray, 0, inputArray.length - 1);
+
+		System.out.println(Arrays.toString(inputArray));
+		// [0, 0, 4, 6, 8, 12, 17, 43, 74, 81, 92, 754, 912, 1098]
+	}
+
+	public static void quickSort(int [] inputArray, int start, int end) {
+		if(start < end) {
+			int pp = partition(inputArray, start, end); // give the index position of the correctly placed value in the array
+			quickSort(inputArray, start, pp - 1); // sorts the left half of the range
+			quickSort(inputArray, pp + 1, end); // sorts the right half of the range
+		}
+	}
+
+	public static int partition(int [] inputArray, int start, int end) {
+		int pivot = inputArray[end];
+
+		// in the first iteration, i starts from -1
+		int i = start - 1;
+		for(int j = start; j <= end - 1; j++) {
+			if(inputArray[j] <= pivot) {
+				i++;
+				// we are swapping below
+				int ival = inputArray[i];
+				int jval = inputArray[j];
+				inputArray[i] = jval;
+				inputArray[j] = ival;
+			}
+		}
+
+		// put the pivot value in the correct slot next
+		int ival = inputArray[i + 1];
+		inputArray[end] = ival;
+		inputArray[i + 1] = pivot; // here, pivot value is placed in the correct slot of the array.
+
+		return i + 1;
+	}
+
+}
+
+```
