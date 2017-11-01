@@ -264,3 +264,69 @@ public class Duplicate {
   }
 }
 ```
+
+-----
+
+## Missing Number
+
+```java
+public class MissingNumber {
+
+  public static void main(String[] args) {
+
+    int[] array = {1,2,3,4,6};
+    int missingNumber = getMissingNumber(array,6);
+    System.out.println(missingNumber); // 5
+  }
+
+  private static int getMissingNumber(int[] array, int n) {
+    int expectedSum = (n*(n+1))/2;
+    int actualSum = 0;
+    for(int i : array) {
+      actualSum = actualSum + i;
+    }
+    return expectedSum - actualSum;
+  }
+}
+```
+
+-----
+
+## Factorial Big Integer
+
+```java
+import java.math.BigInteger;
+
+public class FactorialBigInteger {
+
+  public static void main(String[] args) {
+    int number = 10;
+    // int fact = 1;
+    BigInteger fact = BigInteger.ONE;
+    for(int i = 1; i <= number; i++) {
+      // fact = fact*i;
+      fact = fact.multiply(BigInteger.valueOf(i));
+    }
+
+    System.out.println(fact); // 3628800
+
+  }
+}
+```
+
+
+----
+
+## Swap 2 numbers without using temp
+
+```java
+a = a*b;
+b = a/b;
+a = a/b;
+
+// or
+
+a = a + b;
+b = a - b;
+a = a - b
+```
