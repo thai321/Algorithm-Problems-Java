@@ -474,3 +474,119 @@ public class DuplicateCharacters {
 }
 // e : 2
 ```
+
+-----
+
+## Remove Duplicates
+
+```java
+import java.util.HashSet;
+import java.util.Set;
+
+public class RemoveDuplicates {
+
+  public static void main(String[] args) {
+    System.out.println(removeDuplicates("sandeep"));
+    // sandep
+  }
+
+  private static String removeDuplicates(String str) {
+    Set<Character> set = new HashSet<>();
+    StringBuffer sf = new StringBuffer();
+
+    for(int i = 0; i < str.length(); i++) {
+      Character c = str.charAt(i);
+      if(!set.contains(c)) {
+        set.add(c);
+        sf.append(c);
+      }
+    }
+
+    return sf.toString();
+  }
+}
+```
+
+
+----
+
+## Swap Array List
+
+```java
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class SwapArrayList {
+
+  public static void main(String[] args) {
+    List<Integer> list = new ArrayList<>();
+    list.add(1);
+    list.add(2);
+    list.add(3);
+    list.add(4);
+    System.out.println("Before swapping elements = " + list);
+    Collections.swap(list, 1, 2);
+    System.out.println("After swapping elements = " + list);
+  }
+}
+
+/*
+Before swapping elements = [1, 2, 3, 4]
+After swapping elements = [1, 3, 2, 4]
+*/
+```
+
+-----
+
+## Reverse Array List
+
+```java
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class SwapArrayList {
+
+  public static void main(String[] args) {
+    List<Integer> list = new ArrayList<>();
+    list.add(1);
+    list.add(2);
+    list.add(3);
+    list.add(4);
+    System.out.println("Before reverse elements = " + list);
+    Collections.reverse(list);
+    System.out.println("After reverse elements = " + list);
+  }
+}
+
+/*
+Before reverse elements = [1, 2, 3, 4]
+After reverse elements = [4, 3, 2, 1]
+*/
+```
+
+
+-----
+
+## Reverse Number
+
+```java
+public class ReverseNumber {
+
+  public static void main(String[] args) {
+    System.out.println(reverse(123)); // 321
+  }
+
+  private static int reverse(int n) {
+    int result = 0;
+
+    while(n > 0) {
+      result = result*10 + n%10;
+      n = n/10;
+    }
+
+    return result;
+  }
+}
+```
