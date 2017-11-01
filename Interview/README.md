@@ -330,3 +330,147 @@ a = a + b;
 b = a - b;
 a = a - b
 ```
+
+----
+
+## Print multiplication table
+
+```java
+import java.util.Scanner;
+
+public class Multiplication {
+
+  public static void main(String[] args) {
+    int n, i;
+
+    System.out.println("Enter the number to print multiplication: ");
+    Scanner sc = new Scanner(System.in);
+    n = sc.nextInt();
+
+    for(i = 1; i <= 10; i++) {
+      System.out.println(n + "*" + i + "=" + (n*i));
+    }
+  }
+}
+
+/*
+Enter the number to print multiplication:
+7
+7*1=7
+7*2=14
+7*3=21
+7*4=28
+7*5=35
+7*6=42
+7*7=49
+7*8=56
+7*9=63
+7*10=70
+*/
+```
+
+
+-----
+
+## Anagram
+
+```java
+import java.util.HashMap;
+
+public class Anagram {
+
+  public static void main(String[] args) {
+    String str1 = "jasva";
+    String str2 = "avasj";
+
+    System.out.println(anagramCheck(str1, str2));
+  }
+
+  private static boolean anagramCheck(String str1, String str2) {
+    HashMap<Character, Integer> map = new HashMap<Character, Integer>();
+    char[] str1Chars = str1.toCharArray();
+
+    for(char c : str1Chars) {
+      if(!map.containsKey(c)) {
+        map.put(c, 1);
+      } else {
+        map.put(c, map.get(c) + 1);
+      }
+    }
+
+    char[] str2Chars = str2.toCharArray();
+    for(char c : str2Chars) {
+      if(!map.containsKey(c)) {
+        return false;
+      } else {
+        map.put(c, map.get(c) - 1);
+        if (map.get(c) < 0) {
+          return false;
+        }
+      }
+    }
+
+    for(Integer count : map.values()) {
+      if (count != 0) {
+        return false;
+      }
+    }
+
+    System.out.println(map);
+
+    return true;
+  }
+}
+```
+
+----
+
+## Sort Character in String
+
+```java
+String str = "java"
+char chars[] = str.toCharArray();
+Arrays.sort(chars);
+String sortedStr = new String(chars);
+System.out.println(sortedStr); // avaj
+```
+
+
+----
+
+## Duplicates characters from String
+
+```java
+import java.util.HashMap;
+import java.util.Set;
+import java.util.Map;
+
+public class DuplicateCharacters {
+
+  public static void main(String[] args) {
+    displayDuplicate("sandeep");
+  }
+
+  private static void displayDuplicate(String str) {
+
+    Map<Character, Integer> map = new HashMap<>();
+    char [] characters = str.toCharArray();
+
+    for(char c : characters) {
+      if(!map.containsKey(c)) {
+        map.put(c, 1);
+      } else {
+        map.put(c, map.get(c) + 1);
+      }
+    }
+
+    Set<Map.Entry<Character,Integer>> entrySet = map.entrySet();
+    for(Map.Entry<Character, Integer> entry : entrySet) {
+      if(entry.getValue() > 1) {
+        System.out.printf("%s : %d\n",  entry.getKey(), entry.getValue());
+      }
+    }
+  }
+}
+// e : 2
+```
